@@ -1,6 +1,6 @@
 dependencies {
 	implementation 'me.fixeddev:commandflow-bukkit:0.4.0'
-	implementation 'team.unnamed.gui:core:2.2.4-SNAPSHOT'
+	implementation('team.unnamed.gui:core:2.2.4-SNAPSHOT') { transitive(false) }
 	implementation 'me.yushust.inject:core:0.4.5-SNAPSHOT'
 	implementation "me.yushust.message:sourcetype-bukkit-yml:6.0.17"
 	implementation "me.yushust.message:core:6.0.17"
