@@ -1,0 +1,9 @@
+root = true
+
+[*]
+charset = utf-8
+indent_style = tab
+indent_size = 2
+
+# Intellij
+ij_java_do_not_wrap_after_single_annotation = true

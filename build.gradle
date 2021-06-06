@@ -1,0 +1,47 @@
+plugins {
+	id 'java'
+	id 'maven-publish'
+	id 'com.github.johnrengelman.shadow' version '7.0.0'
+}
+
+subprojects {
+	apply plugin: 'java'
+	apply plugin: 'maven-publish'
+	apply plugin: 'com.github.johnrengelman.shadow'
+
+	group 'me.pixeldev.alya'
+	version '1.0-SNAPSHOT'
+
+	publishing {
+		publications {
+			mavenJava(MavenPublication) {
+				groupId "me.pixeldev.alya"
+				artifactId "${project.name}"
+				version "${project.version}"
+
+				from components.java
+			}
+		}
+	}
+
+	repositories {
+		mavenLocal()
+
+		maven {
+			url = 'https://repo.unnamed.team/repository/unnamed-releases/'
+		}
+		maven {
+			url = 'https://repo.unnamed.team/repository/unnamed-snapshots/'
+		}
+		maven {
+			url = 'https://repo.codemc.io/repository/nms/'
+		}
+
+		mavenCentral()
+	}
+
+	shadowJar {
+		archiveFileName.set("${project.name}-${project.version}.jar")
+	}
+
+}
