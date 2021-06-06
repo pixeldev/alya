@@ -40,8 +40,4 @@ subprojects {
 		mavenCentral()
 	}
 
-	shadowJar {
-		archiveFileName.set("${project.name}-${project.version}.jar")
-	}
-
 }

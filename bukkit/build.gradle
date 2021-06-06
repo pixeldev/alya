@@ -1,0 +1,18 @@
+dependencies {
+	implementation 'me.fixeddev:commandflow-bukkit:0.4.0'
+	implementation 'team.unnamed.gui:core:2.2.4-SNAPSHOT'
+	implementation 'me.yushust.inject:core:0.4.5-SNAPSHOT'
+	implementation "me.yushust.message:sourcetype-bukkit-yml:6.0.17"
+	implementation "me.yushust.message:core:6.0.17"
+
+	compileOnly 'org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT'
+}
+
+def path = 'me.pixeldev.alya.bukkit'
+
+shadowJar {
+	relocate 'team.unnamed.gui', "${path}.gui"
+	relocate 'me.yushust.inject', "${path}.inject"
+	relocate 'me.fixeddev.commandflow', "${path}.commandflow"
+	relocate 'me.yushust.message', "${path}.message"
+}
