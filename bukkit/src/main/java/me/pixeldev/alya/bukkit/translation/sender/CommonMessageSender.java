@@ -1,5 +1,6 @@
 package me.pixeldev.alya.bukkit.translation.sender;
 
+import me.pixeldev.alya.abstraction.actionbar.ActionBarSender;
 import me.pixeldev.alya.abstraction.title.TitleDisplay;
 import me.pixeldev.alya.abstraction.title.TitleSender;
 import me.pixeldev.alya.bukkit.AlyaBasePlugin;
@@ -15,17 +16,25 @@ import javax.inject.Inject;
 public class CommonMessageSender implements MessageSender<Player> {
 
 	@Inject private TitleSender titleSender;
+	@Inject private ActionBarSender actionBarSender;
 
 	@Override
 	public void send(Player player, String mode, String message) {
-		if (mode.equals(SendingModes.TITLE)) {
-			titleSender.sendTitle(player, TitleDisplay.builder(message)
-				.setFadeIn(20)
-				.setStay(40)
-				.setFadeOut(20)
-				.build());
+		switch (mode) {
+			case SendingModes.TITLE: {
+				titleSender.sendTitle(player, TitleDisplay.builder(message)
+					.setFadeIn(20)
+					.setStay(40)
+					.setFadeOut(20)
+					.build()
+				);
+				return;
+			}
 
-			return;
+			case SendingModes.ACTION_BAR: {
+				actionBarSender.sendActionBar(player, message);
+				return;
+			}
 		}
 
 		CompatibleSound compatibleSound = SendingModes.SOUNDS.get(mode);
