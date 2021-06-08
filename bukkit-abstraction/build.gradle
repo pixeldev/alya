@@ -1,0 +1,5 @@
+dependencies {
+	compileOnly "me.yushust.message:core:6.0.17"
+	compileOnly 'me.yushust.inject:core:0.4.5-SNAPSHOT'
+	compileOnly 'org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT'
+}

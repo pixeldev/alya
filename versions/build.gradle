@@ -1,0 +1,7 @@
+subprojects {
+	dependencies {
+		compileOnly project(':bukkit-abstraction')
+		compileOnly "me.yushust.message:core:6.0.17"
+		compileOnly 'me.yushust.inject:core:0.4.5-SNAPSHOT'
+	}
+}

@@ -40,4 +40,13 @@ subprojects {
 		mavenCentral()
 	}
 
+	def path = 'me.pixeldev.alya.bukkit'
+
+	shadowJar {
+		relocate 'team.unnamed.gui', "${path}.gui"
+		relocate 'me.yushust.inject', "${path}.inject"
+		relocate 'me.fixeddev.commandflow', "${path}.commandflow"
+		relocate 'me.yushust.message', "${path}.message"
+	}
+
 }

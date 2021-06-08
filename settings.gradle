@@ -1,2 +1,8 @@
 rootProject.name = 'alya'
-include 'bukkit'
+include(
+	'bukkit', 'bukkit-abstraction',
+	'versions',
+	'versions:v1_8_R3', 'versions:v1_16_R3',
+	'jdk',
+	'storage', 'storage:universal', 'storage:gson'
+)
