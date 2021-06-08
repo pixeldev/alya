@@ -6,9 +6,9 @@ import me.yushust.inject.Module;
 
 public final class NMSModuleProvider {
 
-	public static Module getModule() {
+	public static Module getModule(String mainPackage) {
 		try {
-			return (Module) Class.forName("me.pixeldev.alya.versions.v"
+			return (Module) Class.forName(mainPackage + ".v"
 				+ ServerVersionProvider.SERVER_VERSION +
 				".NMSModule" + ServerVersionProvider.SERVER_VERSION)
 				.getConstructor()

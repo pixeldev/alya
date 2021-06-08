@@ -15,7 +15,12 @@ public abstract class AlyaBasePlugin extends JavaPlugin {
 	public static final SplittableRandom RANDOM = new SplittableRandom();
 
 	public void onLoad() {
-		Injector.create(getMainModule(), new MessageModule(), NMSModuleProvider.getModule())
+		Injector.create(getMainModule(),
+			new MessageModule(),
+			NMSModuleProvider.getModule(
+				"me.pixeldev.alya.versions"
+			)
+		)
 			.injectMembers(this);
 	}
 
