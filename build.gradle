@@ -40,7 +40,7 @@ subprojects {
 		mavenCentral()
 	}
 
-	def path = 'me.pixeldev.alya.bukkit'
+	def path = 'me.pixeldev.alya'
 
 	shadowJar {
 		relocate 'team.unnamed.gui', "${path}.gui"
