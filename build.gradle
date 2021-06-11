@@ -10,7 +10,7 @@ subprojects {
 	apply plugin: 'com.github.johnrengelman.shadow'
 
 	group 'me.pixeldev.alya'
-	version '1.0-SNAPSHOT'
+	version '1.0.1-SNAPSHOT'
 
 	publishing {
 		repositories {
@@ -24,7 +24,6 @@ subprojects {
 				credentials {
 					username = System.getenv('REPO_USER')
 					password = System.getenv('REPO_PASSWORD')
-				}
 			}
 		}
 		publications {
@@ -37,13 +36,13 @@ subprojects {
 
 //    publications {
 //      mavenJava(MavenPublication) {
-//        groupId "team.unnamed.gui"
+//        groupId "me.pixeldev.alya"
 //        artifactId "${project.name}"
 //        version "${project.version}"
 //
 //        from components.java
 //      }
-//    }
+    }
 	}
 
 	repositories {
