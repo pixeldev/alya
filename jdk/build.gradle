@@ -1,0 +1,3 @@
+dependencies {
+	compileOnly 'me.yushust.inject:core:0.4.5-SNAPSHOT'
+}

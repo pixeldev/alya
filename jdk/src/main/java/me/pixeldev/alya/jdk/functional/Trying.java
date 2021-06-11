@@ -1,6 +1,7 @@
 package me.pixeldev.alya.jdk.functional;
 
 import java.util.Optional;
+import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 
 public class Trying<T> {
@@ -103,9 +104,9 @@ public class Trying<T> {
    * @param <T>      The expected operation return type
    * @return The operation result
    */
-  public static <T> Trying<T> of(FailableSupplier<? extends T> supplier) {
+  public static <T> Trying<T> of(Callable<? extends T> supplier) {
     try {
-      return success(supplier.get());
+      return success(supplier.call());
     } catch (Throwable throwable) {
       return failure(throwable);
     }

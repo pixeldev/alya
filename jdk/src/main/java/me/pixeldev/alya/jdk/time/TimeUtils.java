@@ -8,24 +8,24 @@ import java.util.Map;
 
 public final class TimeUtils {
 
-  private static final Map<Character, ChronoUnit> units;
+  private static final Map<Character, ChronoUnit> UNITS;
 
   static {
-    units = new HashMap<>();
-    units.put('s', ChronoUnit.SECONDS);
-    units.put('m', ChronoUnit.MINUTES);
-    units.put('h', ChronoUnit.HOURS);
-    units.put('H', ChronoUnit.HOURS);
-    units.put('d', ChronoUnit.DAYS);
-    units.put('D', ChronoUnit.DAYS);
-    units.put('w', ChronoUnit.WEEKS);
-    units.put('W', ChronoUnit.WEEKS);
-    units.put('S', ChronoUnit.WEEKS);
-    units.put('M', ChronoUnit.MONTHS);
-    units.put('y', ChronoUnit.YEARS);
-    units.put('Y', ChronoUnit.YEARS);
-    units.put('a', ChronoUnit.YEARS);
-    units.put('A', ChronoUnit.YEARS);
+    UNITS = new HashMap<>();
+    UNITS.put('s', ChronoUnit.SECONDS);
+    UNITS.put('m', ChronoUnit.MINUTES);
+    UNITS.put('h', ChronoUnit.HOURS);
+    UNITS.put('H', ChronoUnit.HOURS);
+    UNITS.put('d', ChronoUnit.DAYS);
+    UNITS.put('D', ChronoUnit.DAYS);
+    UNITS.put('w', ChronoUnit.WEEKS);
+    UNITS.put('W', ChronoUnit.WEEKS);
+    UNITS.put('S', ChronoUnit.WEEKS);
+    UNITS.put('M', ChronoUnit.MONTHS);
+    UNITS.put('y', ChronoUnit.YEARS);
+    UNITS.put('Y', ChronoUnit.YEARS);
+    UNITS.put('a', ChronoUnit.YEARS);
+    UNITS.put('A', ChronoUnit.YEARS);
   }
 
   public static long parseDuration(String stringDuration) {
@@ -36,10 +36,10 @@ public final class TimeUtils {
       if (Character.isDigit(c)) {
         number.append(c);
       } else {
-        if (units.containsKey(c) && (number.length() > 0)) {
+        if (UNITS.containsKey(c) && (number.length() > 0)) {
           long parsedLong = Long.parseLong(number.toString());
 
-          ChronoUnit unit = units.get(c);
+          ChronoUnit unit = UNITS.get(c);
 
           sum += unit.getDuration().multipliedBy(parsedLong).toMillis();
 

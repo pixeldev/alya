@@ -1,17 +1,19 @@
 package me.pixeldev.alya.jdk.concurrent;
 
 import me.pixeldev.alya.jdk.functional.FailableConsumer;
-import me.pixeldev.alya.jdk.functional.FailableSupplier;
 
+import javax.inject.Singleton;
+import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+@Singleton
 public final class AsyncExecutor {
 
   private static final Executor EXECUTOR = Executors.newCachedThreadPool();
 
-  public static CompletableFuture<Void> run(FailableConsumer runnable) {
+  public CompletableFuture<Void> run(FailableConsumer runnable) {
     return CompletableFuture.runAsync(() -> {
       try {
         runnable.accept();
@@ -21,10 +23,10 @@ public final class AsyncExecutor {
     }, EXECUTOR);
   }
 
-  public static <T> CompletableFuture<T> supply(FailableSupplier<T> supplier) {
+  public <T> CompletableFuture<T> supply(Callable<T> supplier) {
     return CompletableFuture.supplyAsync(() -> {
       try {
-        return supplier.get();
+        return supplier.call();
       } catch (Throwable throwable) {
         throwable.printStackTrace();
 

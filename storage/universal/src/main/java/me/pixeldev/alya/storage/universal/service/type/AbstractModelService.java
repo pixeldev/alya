@@ -4,6 +4,7 @@ import me.pixeldev.alya.jdk.concurrent.AsyncExecutor;
 import me.pixeldev.alya.storage.universal.Model;
 import me.pixeldev.alya.storage.universal.service.CompleteModelService;
 
+import javax.inject.Inject;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -11,6 +12,8 @@ import java.util.function.Consumer;
 
 public abstract class AbstractModelService<T extends Model>
     implements CompleteModelService<T> {
+
+	@Inject private AsyncExecutor executor;
 
   protected final CompleteModelService<T> cacheModelService;
 
@@ -20,7 +23,7 @@ public abstract class AbstractModelService<T extends Model>
 
   @Override
   public CompletableFuture<Boolean> existsByCacheIdentifier(String value) {
-    return AsyncExecutor.supply(
+    return executor.supply(
         () -> existsByCacheIdentifierSync(value)
     );
   }
@@ -32,7 +35,7 @@ public abstract class AbstractModelService<T extends Model>
 
   @Override
   public CompletableFuture<Boolean> exists(String id) {
-    return AsyncExecutor.supply(
+    return executor.supply(
         () -> existsSync(id)
     );
   }
@@ -49,7 +52,7 @@ public abstract class AbstractModelService<T extends Model>
 
   @Override
   public CompletableFuture<Void> delete(String id) {
-    return AsyncExecutor.run(
+    return executor.run(
         () -> deleteSync(id)
     );
   }
@@ -62,7 +65,7 @@ public abstract class AbstractModelService<T extends Model>
 
   @Override
   public CompletableFuture<Void> delete(T model) {
-    return AsyncExecutor.run(
+    return executor.run(
         () -> deleteSync(model)
     );
   }
@@ -77,7 +80,7 @@ public abstract class AbstractModelService<T extends Model>
   @Override
   public CompletableFuture<Optional<T>> findByCacheIdentifier(String value,
                                                               boolean findInDatabaseToo) {
-    return AsyncExecutor.supply(
+    return executor.supply(
         () -> findByCacheIdentifierSync(value, findInDatabaseToo)
     );
   }
@@ -91,7 +94,7 @@ public abstract class AbstractModelService<T extends Model>
   @Override
   public CompletableFuture<Optional<T>> find(String id,
                                              boolean findInDatabaseToo) {
-    return AsyncExecutor.supply(
+    return executor.supply(
         () -> findSync(id, findInDatabaseToo)
     );
   }
@@ -122,7 +125,7 @@ public abstract class AbstractModelService<T extends Model>
 
   @Override
   public CompletableFuture<List<T>> findAllFromCache() {
-    return AsyncExecutor.supply(
+    return executor.supply(
         this::findAllFromCacheSync
     );
   }
@@ -134,7 +137,7 @@ public abstract class AbstractModelService<T extends Model>
 
   @Override
   public CompletableFuture<List<T>> findAll(Consumer<T> postLoad) {
-    return AsyncExecutor.supply(
+    return executor.supply(
         () -> findAllSync(postLoad)
     );
   }
@@ -154,7 +157,7 @@ public abstract class AbstractModelService<T extends Model>
 
   @Override
   public CompletableFuture<Void> upload(T model, boolean removeFromCache) {
-    return AsyncExecutor.run(
+    return executor.run(
         () -> uploadSync(model, removeFromCache)
     );
   }
@@ -172,7 +175,7 @@ public abstract class AbstractModelService<T extends Model>
 
   @Override
   public CompletableFuture<Void> uploadAll(Consumer<T> prePersist) {
-    return AsyncExecutor.run(
+    return executor.run(
         () -> uploadAllSync(prePersist)
     );
   }

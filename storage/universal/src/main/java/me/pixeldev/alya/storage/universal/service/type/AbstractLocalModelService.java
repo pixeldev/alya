@@ -20,8 +20,8 @@ abstract class AbstractLocalModelService<T extends Model>
 
   private final CacheIdentifierResolver<T> resolver;
 
-  public AbstractLocalModelService(ModelMeta<T> modelMeta) {
-    resolver = new CacheIdentifierResolver<>(modelMeta.getCacheIdentifierField());
+  public AbstractLocalModelService() {
+    resolver = new CacheIdentifierResolver<>();
   }
 
   @Override

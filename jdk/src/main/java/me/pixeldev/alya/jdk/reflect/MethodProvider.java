@@ -8,41 +8,42 @@ import java.util.function.Predicate;
 
 public final class MethodProvider {
 
-  private MethodProvider() {
-    throw new UnsupportedOperationException("This class can't be initialized.");
-  }
+	private MethodProvider() {
+		throw new UnsupportedOperationException("This class can't be initialized.");
+	}
 
-  public static void invoke(Method method, Object instance)
-      throws InvocationTargetException, IllegalAccessException {
-    boolean accessible = method.isAccessible();
+	public static void invoke(Method method, Object instance)
+		throws InvocationTargetException, IllegalAccessException {
+		boolean accessible = method.isAccessible();
 
-    method.setAccessible(true);
+		try {
+			method.setAccessible(true);
+			method.invoke(instance);
+		} finally {
+			method.setAccessible(accessible);
+		}
+	}
 
-    method.invoke(instance);
+	public static Optional<Method> getMethodByAnnotation(Class<?> parent,
+																											 Class<? extends Annotation> annotation) {
+		return getMethod(parent, method -> method.isAnnotationPresent(annotation));
+	}
 
-    method.setAccessible(accessible);
-  }
+	public static Optional<Method> getMethod(Class<?> parent,
+																					 Predicate<Method> condition) {
+		for (Method method : getMethods(parent)) {
+			if (!condition.test(method)) {
+				continue;
+			}
 
-  public static Optional<Method> getMethodByAnnotation(Class<?> parent,
-                                                       Class<? extends Annotation> annotation) {
-    return getMethod(parent, method -> method.isAnnotationPresent(annotation));
-  }
+			return Optional.of(method);
+		}
 
-  public static Optional<Method> getMethod(Class<?> parent,
-                                           Predicate<Method> condition) {
-    for (Method method : getMethods(parent)) {
-      if (!condition.test(method)) {
-        continue;
-      }
+		return Optional.empty();
+	}
 
-      return Optional.of(method);
-    }
-
-    return Optional.empty();
-  }
-
-  public static Method[] getMethods(Class<?> parent) {
-    return parent.getDeclaredMethods();
-  }
+	public static Method[] getMethods(Class<?> parent) {
+		return parent.getDeclaredMethods();
+	}
 
 }

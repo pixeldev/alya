@@ -39,7 +39,7 @@ public class JsonModelService<T extends Model>
 	public JsonModelService(@Assist Plugin plugin,
 													@Assist ModelMeta<T> modelMeta,
 													@Assist Class<T> classType) {
-		super(new LocalModelService<>(modelMeta));
+		super(new LocalModelService<>());
 
 		this.classType = classType;
 
