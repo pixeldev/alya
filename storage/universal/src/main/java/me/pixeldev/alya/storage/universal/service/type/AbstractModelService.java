@@ -4,7 +4,6 @@ import me.pixeldev.alya.jdk.concurrent.AsyncExecutor;
 import me.pixeldev.alya.storage.universal.Model;
 import me.pixeldev.alya.storage.universal.service.CompleteModelService;
 
-import javax.inject.Inject;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -13,11 +12,13 @@ import java.util.function.Consumer;
 public abstract class AbstractModelService<T extends Model>
     implements CompleteModelService<T> {
 
-	@Inject private AsyncExecutor executor;
+	private final AsyncExecutor executor;
 
   protected final CompleteModelService<T> cacheModelService;
 
-  public AbstractModelService(CompleteModelService<T> cacheModelService) {
+  public AbstractModelService(AsyncExecutor executor,
+                              CompleteModelService<T> cacheModelService) {
+    this.executor = executor;
     this.cacheModelService = cacheModelService;
   }
 

@@ -2,7 +2,6 @@ package me.pixeldev.alya.storage.universal.service.type;
 
 import me.pixeldev.alya.storage.universal.Model;
 import me.pixeldev.alya.storage.universal.internal.CacheIdentifierResolver;
-import me.pixeldev.alya.storage.universal.internal.meta.ModelMeta;
 import me.pixeldev.alya.storage.universal.service.CompleteModelService;
 
 import java.util.ArrayList;

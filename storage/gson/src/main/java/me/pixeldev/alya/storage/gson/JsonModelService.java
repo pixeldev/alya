@@ -2,6 +2,7 @@ package me.pixeldev.alya.storage.gson;
 
 import com.google.gson.Gson;
 
+import me.pixeldev.alya.jdk.concurrent.AsyncExecutor;
 import me.pixeldev.alya.jdk.reflect.MethodProvider;
 import me.pixeldev.alya.storage.gson.meta.JsonModelMeta;
 import me.pixeldev.alya.storage.universal.Model;
@@ -28,20 +29,20 @@ import java.util.Optional;
 public class JsonModelService<T extends Model>
 	extends AbstractModelService<T> {
 
-	@Inject private Gson mapper;
-
+	private final Gson mapper;
 	private final File modelFolder;
 
 	private final Class<T> classType;
 	private final Method prePersistMethod;
 
-	@Assisted
-	public JsonModelService(@Assist Plugin plugin,
-													@Assist ModelMeta<T> modelMeta,
-													@Assist Class<T> classType) {
-		super(new LocalModelService<>());
+	public JsonModelService(Gson mapper,
+													AsyncExecutor executor,
+													Plugin plugin,
+													ModelMeta<T> modelMeta) {
+		super(executor, new LocalModelService<>());
 
-		this.classType = classType;
+		this.mapper = mapper;
+		this.classType = modelMeta.getType();
 
 		prePersistMethod = modelMeta.getPrePersistMethod();
 		modelFolder = new File(

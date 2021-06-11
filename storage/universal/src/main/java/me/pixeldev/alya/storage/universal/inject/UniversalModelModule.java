@@ -8,7 +8,7 @@ import me.yushust.inject.key.TypeReference;
 
 import javax.inject.Provider;
 
-public abstract class UniversalModelModule<T extends Model>
+public class UniversalModelModule<T extends Model>
 	extends AbstractModule {
 
 	protected final Class<T> modelClass;
@@ -32,5 +32,5 @@ public abstract class UniversalModelModule<T extends Model>
 		bind(TypeReference.of(FindService.class, modelClass)).to(modelServiceType).singleton();
 		bind(TypeReference.of(UploadService.class, modelClass)).to(modelServiceType).singleton();
 	}
-	
+
 }
