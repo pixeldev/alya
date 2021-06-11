@@ -60,17 +60,45 @@ repositories {
 ```xml
 
 <dependency>
-    <groupId>me.pixeldev.bukkit</groupId>
-    <artifactId>core</artifactId>
+    <groupId>me.pixeldev.alya</groupId>
+    <artifactId>bukkit</artifactId>
     <version>VERSION</version> <!--Check the latest version in the repositories-->
     <classifier>all</classifier>
 </dependency>
+```
+
+If you're using the annotation processor to AutoListener use in your *maven-compiler-plugin*:
+
+```xml
+<configuration>
+  <annotationProcessorPaths>
+    <annotationProcessorPath>
+      <groupId>me.pixeldev.alya</groupId>
+      <artifactId>bukkit</artifactId>
+      <version>VERSION</version> <!--Check the latest version in the repositories-->
+      <classifier>all</classifier>
+    </annotationProcessorPath>
+  </annotationProcessorPaths>
+</configuration>
 ```
 
 #### Gradle (build.gradle)
 
 ```groovy
 dependencies {
-  implementation 'me.pixeldev.alya:bukkit:VERSION'
+  implementation('me.pixeldev.alya:bukkit:VERSION:all') {transitive = true}
 }
 ```
+
+If you're using the annotation processor to AutoListener use too:
+
+```groovy
+annotationProcessor 'me.pixeldev.alya:bukkit:1.0-SNAPSHOT:all'
+```
+
+If you want to use some other module, just change the artifactId to the chosen module.
+
+### Current modules:
+
+- jdk
+- gson
