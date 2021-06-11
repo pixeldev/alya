@@ -2,8 +2,10 @@ package me.pixeldev.alya.versions.v1_16_R3;
 
 import me.pixeldev.alya.abstraction.actionbar.ActionBarSender;
 import me.pixeldev.alya.abstraction.packet.PacketSender;
+import me.pixeldev.alya.abstraction.packet.intercept.PacketInterceptorAssigner;
 import me.pixeldev.alya.abstraction.title.TitleSender;
 import me.pixeldev.alya.versions.v1_16_R3.actionbar.ActionBarSender1_16_R3;
+import me.pixeldev.alya.versions.v1_16_R3.packet.PacketInterceptorAssigner1_16_R3;
 import me.pixeldev.alya.versions.v1_16_R3.packet.PacketSender1_16_R3;
 import me.pixeldev.alya.versions.v1_16_R3.title.TitleSender1_16_R3;
 
@@ -16,6 +18,7 @@ public class NMSModule1_16_R3 extends AbstractModule {
 		bind(PacketSender.class).to(PacketSender1_16_R3.class).singleton();
 		bind(TitleSender.class).to(TitleSender1_16_R3.class).singleton();
 		bind(ActionBarSender.class).to(ActionBarSender1_16_R3.class).singleton();
+		bind(PacketInterceptorAssigner.class).to(PacketInterceptorAssigner1_16_R3.class).singleton();
 	}
 
 }
