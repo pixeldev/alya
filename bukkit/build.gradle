@@ -1,13 +1,13 @@
 dependencies {
-	implementation 'me.fixeddev:commandflow-bukkit:0.4.0'
-	implementation('team.unnamed.gui:core:2.2.4-SNAPSHOT') { transitive(false) }
-	implementation 'me.yushust.inject:core:0.4.5-SNAPSHOT'
-	implementation "me.yushust.message:sourcetype-bukkit-yml:6.0.17"
-	implementation "me.yushust.message:core:6.0.17"
+	api 'me.fixeddev:commandflow-bukkit:0.4.0'
+	api 'team.unnamed.gui:core:2.3.1-SNAPSHOT'
+	api 'me.yushust.inject:core:0.4.5-SNAPSHOT'
+	api 'me.yushust.message:sourcetype-bukkit-yml:6.0.17'
+	api 'me.yushust.message:core:6.0.17'
 
-	implementation project(':bukkit-abstraction')
-	["v1_8_R3", "v1_16_R3"].forEach {
-		implementation project(":versions:${it}")
+	api project(':bukkit-abstraction')
+	['v1_8_R3', 'v1_16_R3'].forEach {
+		runtimeOnly project(":versions:${it}")
 	}
 
 	compileOnly 'org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT'

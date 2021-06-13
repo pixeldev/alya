@@ -3,7 +3,7 @@ package me.pixeldev.alya.bukkit.sound;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
-import static me.pixeldev.alya.bukkit.server.ServerVersionProvider.SERVER_VERSION_INT;
+import static team.unnamed.gui.core.version.ServerVersionProvider.SERVER_VERSION_INT;
 
 public enum CompatibleSound {
 

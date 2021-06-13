@@ -1,13 +1,10 @@
 plugins {
-	id 'java'
 	id 'maven-publish'
-	id 'com.github.johnrengelman.shadow' version '7.0.0'
 }
 
 subprojects {
-	apply plugin: 'java'
+	apply plugin: 'java-library'
 	apply plugin: 'maven-publish'
-	apply plugin: 'com.github.johnrengelman.shadow'
 
 	group 'me.pixeldev.alya'
 	version '1.0.1-SNAPSHOT'
@@ -24,25 +21,22 @@ subprojects {
 				credentials {
 					username = System.getenv('REPO_USER')
 					password = System.getenv('REPO_PASSWORD')
+				}
 			}
-		}
-		publications {
-			maven(MavenPublication) {
-				from components.java
+			publications {
+				maven(MavenPublication) {
+					from components.java
+				}
 			}
 		}
 
 //    For install the project into ur .m2
-
+//
 //    publications {
 //      mavenJava(MavenPublication) {
-//        groupId "me.pixeldev.alya"
-//        artifactId "${project.name}"
-//        version "${project.version}"
-//
 //        from components.java
 //      }
-    }
+//    }
 	}
 
 	repositories {
@@ -53,15 +47,6 @@ subprojects {
 		maven { url = 'https://repo.codemc.io/repository/nms/' }
 
 		mavenCentral()
-	}
-
-	def path = 'me.pixeldev.alya'
-
-	shadowJar {
-		relocate 'team.unnamed.gui', "${path}.gui"
-		relocate 'me.yushust.inject', "${path}.inject"
-		relocate 'me.fixeddev.commandflow', "${path}.commandflow"
-		relocate 'me.yushust.message', "${path}.message"
 	}
 
 }

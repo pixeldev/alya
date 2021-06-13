@@ -1,8 +1,7 @@
 package me.pixeldev.alya.bukkit.version;
 
-import me.pixeldev.alya.bukkit.server.ServerVersionProvider;
-
 import me.yushust.inject.Module;
+import team.unnamed.gui.core.version.ServerVersionProvider;
 
 public final class NMSModuleProvider {
 

@@ -1,8 +1,13 @@
 rootProject.name = 'alya'
-include(
-	'bukkit', 'bukkit-abstraction',
-	'versions',
-	'versions:v1_8_R3', 'versions:v1_16_R3',
-	'jdk',
-	'storage', 'storage:universal', 'storage:gson'
-)
+
+['bukkit', 'bukkit-abstraction', 'jdk'].forEach {
+	include it
+}
+
+['v1_8_R3', 'v1_16_R3'].forEach {
+	include "versions:${it}"
+}
+
+['universal', 'gson'].forEach {
+	include "storage:${it}"
+}
