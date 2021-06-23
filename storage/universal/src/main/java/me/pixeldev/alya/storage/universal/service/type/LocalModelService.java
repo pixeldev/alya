@@ -7,15 +7,15 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class LocalModelService<T extends Model> extends AbstractLocalModelService<T> {
 
-  private final Map<String, T> cache;
+	private final Map<String, T> cache;
 
-  public LocalModelService() {
-    this.cache = new ConcurrentHashMap<>();
-  }
+	public LocalModelService() {
+		this.cache = new ConcurrentHashMap<>();
+	}
 
-  @Override
-  protected Map<String, T> cache() {
-    return cache;
-  }
+	@Override
+	protected Map<String, T> cache() {
+		return cache;
+	}
 
 }

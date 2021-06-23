@@ -18,8 +18,8 @@ public final class CommonTranslatorProvider implements TranslationProvider {
 	@Override
 	public String getTranslation(Namespace namespace, String key) {
 		CommandSender commandSender = namespace.getObject(
-			CommandSender.class,
-			BukkitCommandManager.SENDER_NAMESPACE
+				CommandSender.class,
+				BukkitCommandManager.SENDER_NAMESPACE
 		);
 
 		Object entity = "es";

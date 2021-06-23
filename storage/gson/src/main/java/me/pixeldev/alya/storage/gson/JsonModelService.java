@@ -2,7 +2,6 @@ package me.pixeldev.alya.storage.gson;
 
 import com.google.gson.Gson;
 
-import me.pixeldev.alya.jdk.concurrent.AsyncExecutor;
 import me.pixeldev.alya.jdk.reflect.MethodProvider;
 import me.pixeldev.alya.storage.gson.meta.JsonModelMeta;
 import me.pixeldev.alya.storage.universal.Model;
@@ -11,12 +10,8 @@ import me.pixeldev.alya.storage.universal.internal.meta.ModelMeta;
 import me.pixeldev.alya.storage.universal.service.type.AbstractModelService;
 import me.pixeldev.alya.storage.universal.service.type.LocalModelService;
 
-import me.yushust.inject.assisted.Assist;
-import me.yushust.inject.assisted.Assisted;
-
 import org.bukkit.plugin.Plugin;
 
-import javax.inject.Inject;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -27,7 +22,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class JsonModelService<T extends Model>
-	extends AbstractModelService<T> {
+		extends AbstractModelService<T> {
 
 	private final Gson mapper;
 	private final File modelFolder;
@@ -36,17 +31,16 @@ public class JsonModelService<T extends Model>
 	private final Method prePersistMethod;
 
 	public JsonModelService(Gson mapper,
-													AsyncExecutor executor,
 													Plugin plugin,
 													ModelMeta<T> modelMeta) {
-		super(executor, new LocalModelService<>());
+		super(new LocalModelService<>());
 
 		this.mapper = mapper;
 		this.classType = modelMeta.getType();
 
 		prePersistMethod = modelMeta.getPrePersistMethod();
 		modelFolder = new File(
-			plugin.getDataFolder(), ((JsonModelMeta<T>) modelMeta).getFolderName()
+				plugin.getDataFolder(), ((JsonModelMeta<T>) modelMeta).getFolderName()
 		);
 
 		if (!modelFolder.exists()) {
@@ -119,8 +113,8 @@ public class JsonModelService<T extends Model>
 			}
 		} else {
 			LoggerUtil.applyCommonErrorHandler(
-				new IllegalArgumentException("Cannot write in file with id " + model.getId()),
-				"Writing into a file."
+					new IllegalArgumentException("Cannot write in file with id " + model.getId()),
+					"Writing into a file."
 			);
 		}
 	}

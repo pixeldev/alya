@@ -61,9 +61,8 @@ public class RuntimeTypeAdapterFactory<T> implements TypeAdapterFactory {
 	/**
 	 * Registers {@code type} identified by {@code label}. Labels are case
 	 * sensitive.
-	 *
 	 * @throws IllegalArgumentException if either {@code type} or {@code label}
-	 *     have already been registered on this type adapter.
+	 *                                  have already been registered on this type adapter.
 	 */
 	public RuntimeTypeAdapterFactory<T> registerSubtype(Class<? extends T> type, String label) {
 		if (type == null || label == null) {
@@ -80,9 +79,8 @@ public class RuntimeTypeAdapterFactory<T> implements TypeAdapterFactory {
 	/**
 	 * Registers {@code type} identified by its {@link Class#getSimpleName simple
 	 * name}. Labels are case sensitive.
-	 *
 	 * @throws IllegalArgumentException if either {@code type} or its simple name
-	 *     have already been registered on this type adapter.
+	 *                                  have already been registered on this type adapter.
 	 */
 	public RuntimeTypeAdapterFactory<T> registerSubtype(Class<? extends T> type) {
 		return registerSubtype(type, type.getSimpleName());
@@ -94,9 +92,9 @@ public class RuntimeTypeAdapterFactory<T> implements TypeAdapterFactory {
 		}
 
 		final Map<String, TypeAdapter<?>> labelToDelegate
-			= new LinkedHashMap<>();
+				= new LinkedHashMap<>();
 		final Map<Class<?>, TypeAdapter<?>> subtypeToDelegate
-			= new LinkedHashMap<>();
+				= new LinkedHashMap<>();
 		for (Map.Entry<String, Class<?>> entry : labelToSubtype.entrySet()) {
 			TypeAdapter<?> delegate = gson.getDelegateAdapter(this, TypeToken.get(entry.getValue()));
 			labelToDelegate.put(entry.getKey(), delegate);
@@ -104,7 +102,8 @@ public class RuntimeTypeAdapterFactory<T> implements TypeAdapterFactory {
 		}
 
 		return new TypeAdapter<R>() {
-			@Override public R read(JsonReader in) {
+			@Override
+			public R read(JsonReader in) {
 				JsonElement jsonElement = Streams.parse(in);
 				JsonElement labelJsonElement;
 				if (maintainType) {
@@ -115,26 +114,27 @@ public class RuntimeTypeAdapterFactory<T> implements TypeAdapterFactory {
 
 				if (labelJsonElement == null) {
 					throw new JsonParseException("cannot deserialize " + baseType
-						+ " because it does not define a field named " + typeFieldName);
+							+ " because it does not define a field named " + typeFieldName);
 				}
 				String label = labelJsonElement.getAsString();
 				@SuppressWarnings("unchecked") // registration requires that subtype extends T
 				TypeAdapter<R> delegate = (TypeAdapter<R>) labelToDelegate.get(label);
 				if (delegate == null) {
 					throw new JsonParseException("cannot deserialize " + baseType + " subtype named "
-						+ label + "; did you forget to register a subtype?");
+							+ label + "; did you forget to register a subtype?");
 				}
 				return delegate.fromJsonTree(jsonElement);
 			}
 
-			@Override public void write(JsonWriter out, R value) throws IOException {
+			@Override
+			public void write(JsonWriter out, R value) throws IOException {
 				Class<?> srcType = value.getClass();
 				String label = subtypeToLabel.get(srcType);
 				@SuppressWarnings("unchecked") // registration requires that subtype extends T
 				TypeAdapter<R> delegate = (TypeAdapter<R>) subtypeToDelegate.get(srcType);
 				if (delegate == null) {
 					throw new JsonParseException("cannot serialize " + srcType.getName()
-						+ "; did you forget to register a subtype?");
+							+ "; did you forget to register a subtype?");
 				}
 				JsonObject jsonObject = delegate.toJsonTree(value).getAsJsonObject();
 
@@ -147,7 +147,7 @@ public class RuntimeTypeAdapterFactory<T> implements TypeAdapterFactory {
 
 				if (jsonObject.has(typeFieldName)) {
 					throw new JsonParseException("cannot serialize " + srcType.getName()
-						+ " because it already defines a field named " + typeFieldName);
+							+ " because it already defines a field named " + typeFieldName);
 				}
 				clone.add(typeFieldName, new JsonPrimitive(label));
 

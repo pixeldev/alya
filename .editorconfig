@@ -6,4 +6,5 @@ indent_style = tab
 indent_size = 2
 
 # Intellij
+ij_continuation_indent_size = 4
 ij_java_do_not_wrap_after_single_annotation = true

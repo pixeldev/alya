@@ -9,7 +9,7 @@ import me.yushust.inject.key.TypeReference;
 import javax.inject.Provider;
 
 public class UniversalModelModule<T extends Model>
-	extends AbstractModule {
+		extends AbstractModule {
 
 	protected final Class<T> modelClass;
 	private final Class<? extends Provider<CompleteModelService<T>>> modelServiceProvider;
@@ -23,7 +23,7 @@ public class UniversalModelModule<T extends Model>
 	@Override
 	protected void configure() {
 		TypeReference<CompleteModelService<T>> modelServiceType =
-			TypeReference.of(CompleteModelService.class, modelClass);
+				TypeReference.of(CompleteModelService.class, modelClass);
 
 		bind(modelServiceType).toProvider(modelServiceProvider).singleton();
 

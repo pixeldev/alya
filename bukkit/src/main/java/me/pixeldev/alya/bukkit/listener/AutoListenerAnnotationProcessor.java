@@ -34,11 +34,11 @@ public class AutoListenerAnnotationProcessor extends AbstractProcessor {
 			out.println();
 
 			elements.forEach(listener -> out.println(
-				"  @javax.inject.Inject private "
-					+ listener
-					+ " "
-					+ listener.getSimpleName().toString().toLowerCase()
-					+ ";"
+					"  @javax.inject.Inject private "
+							+ listener
+							+ " "
+							+ listener.getSimpleName().toString().toLowerCase()
+							+ ";"
 			));
 
 			out.println();
@@ -48,7 +48,7 @@ public class AutoListenerAnnotationProcessor extends AbstractProcessor {
 			out.println("    pluginManager.registerEvents(new team.unnamed.gui.core.GUIListeners(), plugin);");
 
 			elements.forEach(listener -> out.println(
-				"    pluginManager.registerEvents(" + listener.getSimpleName().toString().toLowerCase() + ", plugin);"
+					"    pluginManager.registerEvents(" + listener.getSimpleName().toString().toLowerCase() + ", plugin);"
 			));
 
 			out.print("  }");
@@ -62,44 +62,44 @@ public class AutoListenerAnnotationProcessor extends AbstractProcessor {
 												 RoundEnvironment roundEnvironment) {
 
 		final Set<? extends Element> listeners =
-			roundEnvironment.getElementsAnnotatedWith(AutoListener.class);
+				roundEnvironment.getElementsAnnotatedWith(AutoListener.class);
 
 		final TypeMirror listener = getTypeByClass();
 
 		listeners.removeIf(
-			element -> {
-				if (element.getKind() != ElementKind.CLASS) {
-					messager()
-						.printMessage(
-							NOTE,
-							"Invalid element of type "
-								+ element.getKind()
-								+ " annotated with @AutoListener",
-							element);
-					return true;
-				}
+				element -> {
+					if (element.getKind() != ElementKind.CLASS) {
+						messager()
+								.printMessage(
+										NOTE,
+										"Invalid element of type "
+												+ element.getKind()
+												+ " annotated with @AutoListener",
+										element);
+						return true;
+					}
 
-				if (element.getModifiers().contains(Modifier.STATIC)
-					|| element.getModifiers().contains(Modifier.ABSTRACT)
-					|| element.getModifiers().contains(Modifier.PRIVATE)
-					|| element.getModifiers().contains(Modifier.PROTECTED)) {
+					if (element.getModifiers().contains(Modifier.STATIC)
+							|| element.getModifiers().contains(Modifier.ABSTRACT)
+							|| element.getModifiers().contains(Modifier.PRIVATE)
+							|| element.getModifiers().contains(Modifier.PROTECTED)) {
 
-					messager()
-						.printMessage(
-							ERROR, "Element annotated with " + "@AutoListener is not instanciable class!");
-					return true;
-				}
+						messager()
+								.printMessage(
+										ERROR, "Element annotated with " + "@AutoListener is not instanciable class!");
+						return true;
+					}
 
-				if (!isType(element.asType(), listener)) {
-					messager()
-						.printMessage(
-							ERROR,
-							"Element annotated with @AutoListener is not type of org.bukkit.event.Listener!");
-					return true;
-				}
+					if (!isType(element.asType(), listener)) {
+						messager()
+								.printMessage(
+										ERROR,
+										"Element annotated with @AutoListener is not type of org.bukkit.event.Listener!");
+						return true;
+					}
 
-				return false;
-			});
+					return false;
+				});
 
 		if (listeners.size() == 0) {
 			return false;

@@ -23,10 +23,10 @@ public class CommonMessageSender implements MessageSender<Player> {
 		switch (mode) {
 			case SendingModes.TITLE: {
 				titleSender.sendTitle(player, TitleDisplay.builder(message)
-					.setFadeIn(20)
-					.setStay(40)
-					.setFadeOut(20)
-					.build()
+						.setFadeIn(20)
+						.setStay(40)
+						.setFadeOut(20)
+						.build()
 				);
 				return;
 			}
@@ -47,7 +47,7 @@ public class CommonMessageSender implements MessageSender<Player> {
 	public void send(Player receiver, String mode, StringList messages) {
 		if (mode.equals(SendingModes.RANDOM)) {
 			receiver.sendMessage(messages.get(AlyaBasePlugin.RANDOM.nextInt(
-				messages.size()
+					messages.size()
 			)));
 
 			return;
@@ -55,13 +55,13 @@ public class CommonMessageSender implements MessageSender<Player> {
 
 		if (mode.equals(SendingModes.FULL_TITLE)) {
 			titleSender.sendTitle(receiver, TitleDisplay.builder(
-				messages.get(0)
+					messages.get(0)
 			)
-				.setSubtitle(messages.get(1))
-				.setFadeIn(20)
-				.setStay(40)
-				.setFadeOut(20)
-				.build());
+					.setSubtitle(messages.get(1))
+					.setFadeIn(20)
+					.setStay(40)
+					.setFadeOut(20)
+					.build());
 
 			return;
 		}

@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ObjectId
-	implements Comparable<ObjectId>, Cloneable {
+		implements Comparable<ObjectId>, Cloneable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -23,8 +23,8 @@ public class ObjectId
 	private static final AtomicInteger NEXT_COUNTER = new AtomicInteger(new SecureRandom().nextInt());
 
 	private static final char[] HEX_CHARS = new char[]{
-		'0', '1', '2', '3', '4', '5', '6', '7',
-		'8', '9', 'a', 'b', 'c', 'd', 'e', 'f'
+			'0', '1', '2', '3', '4', '5', '6', '7',
+			'8', '9', 'a', 'b', 'c', 'd', 'e', 'f'
 	};
 
 	private final int timestamp;
@@ -34,7 +34,6 @@ public class ObjectId
 
 	/**
 	 * Gets a new object id.
-	 *
 	 * @return the new id
 	 */
 	public static ObjectId get() {
@@ -47,7 +46,6 @@ public class ObjectId
 	 * The returned object id will compare as less than or equal to any other object id within the same second as the given date, and
 	 * less than any later date.
 	 * </p>
-	 *
 	 * @param date the date
 	 * @return the ObjectId
 	 * @since 4.1
@@ -58,7 +56,6 @@ public class ObjectId
 
 	/**
 	 * Checks if a string could be an {@code ObjectId}.
-	 *
 	 * @param hexString a potential ObjectId as a String.
 	 * @return whether the string could be an object id
 	 * @throws IllegalArgumentException if hexString is null
@@ -100,7 +97,6 @@ public class ObjectId
 
 	/**
 	 * Constructs a new instance using the given date.
-	 *
 	 * @param date the date
 	 */
 	public ObjectId(final Date date) {
@@ -109,7 +105,6 @@ public class ObjectId
 
 	/**
 	 * Constructs a new instances using the given date and counter.
-	 *
 	 * @param date    the date
 	 * @param counter the counter
 	 * @throws IllegalArgumentException if the high order byte of counter is not zero
@@ -120,7 +115,6 @@ public class ObjectId
 
 	/**
 	 * Creates an ObjectId using the given time, machine identifier, process identifier, and counter.
-	 *
 	 * @param timestamp the time in seconds
 	 * @param counter   the counter
 	 * @throws IllegalArgumentException if the high order byte of counter is not zero
@@ -149,7 +143,6 @@ public class ObjectId
 
 	/**
 	 * Constructs a new instance from a 24-byte hexadecimal string representation.
-	 *
 	 * @param hexString the string to convert
 	 * @throws IllegalArgumentException if the string is not a valid hex string representation of an ObjectId
 	 */
@@ -163,7 +156,6 @@ public class ObjectId
 
 	/**
 	 * Constructs a new instance from the given ByteBuffer
-	 *
 	 * @param buffer the ByteBuffer
 	 * @throws IllegalArgumentException if the buffer is null or does not have at least 12 bytes remaining
 	 * @since 3.4
@@ -179,7 +171,6 @@ public class ObjectId
 
 	/**
 	 * Convert to a byte array.  Note that the numbers are stored in big-endian order.
-	 *
 	 * @return the byte array
 	 */
 	public byte[] toByteArray() {
@@ -191,7 +182,6 @@ public class ObjectId
 	/**
 	 * Convert to bytes and put those bytes to the provided ByteBuffer.
 	 * Note that the numbers are stored in big-endian order.
-	 *
 	 * @param buffer the ByteBuffer
 	 * @throws IllegalArgumentException if the buffer is null or does not have at least 12 bytes remaining
 	 * @since 3.4
@@ -213,7 +203,6 @@ public class ObjectId
 
 	/**
 	 * Gets the timestamp (number of seconds since the Unix epoch).
-	 *
 	 * @return the timestamp
 	 */
 	public int getTimestamp() {
@@ -222,7 +211,6 @@ public class ObjectId
 
 	/**
 	 * Gets the timestamp as a {@code Date} instance.
-	 *
 	 * @return the Date
 	 */
 	public Date getDate() {
@@ -231,7 +219,6 @@ public class ObjectId
 
 	/**
 	 * Converts this instance into a 24-byte hexadecimal string representation.
-	 *
 	 * @return a string representation of the ObjectId in hexadecimal format
 	 */
 	public String toHexString() {
@@ -358,9 +345,9 @@ public class ObjectId
 	private static int makeInt(final byte b3, final byte b2, final byte b1, final byte b0) {
 		// CHECKSTYLE:OFF
 		return (((b3) << 24) |
-			((b2 & 0xff) << 16) |
-			((b1 & 0xff) << 8) |
-			((b0 & 0xff)));
+				((b2 & 0xff) << 16) |
+				((b1 & 0xff) << 8) |
+				((b0 & 0xff)));
 		// CHECKSTYLE:ON
 	}
 

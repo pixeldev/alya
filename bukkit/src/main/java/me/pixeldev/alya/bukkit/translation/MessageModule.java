@@ -13,16 +13,18 @@ import javax.inject.Singleton;
 
 public final class MessageModule extends AbstractModule {
 
-	@Provides @Singleton
+	@Provides
+	@Singleton
 	public MessageSource createSource(Plugin plugin) {
 		return new YamlMessageSource(
-			plugin,
-			plugin.getDataFolder(),
-			"lang_%lang%.yml"
+				plugin,
+				plugin.getDataFolder(),
+				"lang_%lang%.yml"
 		);
 	}
 
-	@Provides @Singleton
+	@Provides
+	@Singleton
 	public MessageHandler createHandler(MessageSource source,
 																			ConfigurationModule configurationModule) {
 		return MessageHandler.of(source, configurationModule);

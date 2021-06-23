@@ -28,9 +28,9 @@ public abstract class AbstractGUICreator implements GUICreator {
 
 	public String getTitle(Player issuer, Object... jitEntities) {
 		return messageHandler.get(
-			issuer,
-			String.format(MENU_NAME_FORMAT, menuKey),
-			jitEntities
+				issuer,
+				String.format(MENU_NAME_FORMAT, menuKey),
+				jitEntities
 		);
 	}
 
@@ -40,29 +40,29 @@ public abstract class AbstractGUICreator implements GUICreator {
 																			Supplier<GUICreator> backMenuSupplier,
 																			Object... extraData) {
 		return ItemClickable.builder(slot)
-			.setItemStack(itemStack)
-			.setAction(event -> {
-				issuer.openInventory(backMenuSupplier.get().create(issuer, extraData));
-				return true;
-			})
-			.build();
+				.setItemStack(itemStack)
+				.setAction(event -> {
+					issuer.openInventory(backMenuSupplier.get().create(issuer, extraData));
+					return true;
+				})
+				.build();
 	}
 
 	public ItemBuilder createItem(Player issuer,
 																Material material, String itemKey,
 																Object... jitEntities) {
 		return ItemBuilder.newBuilder(material)
-			.setName(getItemName(issuer, itemKey, jitEntities))
-			.setLore(getItemLore(issuer, itemKey, jitEntities));
+				.setName(getItemName(issuer, itemKey, jitEntities))
+				.setLore(getItemLore(issuer, itemKey, jitEntities));
 	}
 
 	public String getItemName(Player issuer,
 														String itemKey,
 														Object... jitEntities) {
 		return messageHandler.get(
-			issuer,
-			String.format(ITEM_NAME_FORMAT, menuKey, itemKey),
-			jitEntities
+				issuer,
+				String.format(ITEM_NAME_FORMAT, menuKey, itemKey),
+				jitEntities
 		);
 	}
 
@@ -70,9 +70,9 @@ public abstract class AbstractGUICreator implements GUICreator {
 																	String itemKey,
 																	Object... jitEntities) {
 		return messageHandler.getMany(
-			issuer,
-			String.format(ITEM_LORE_FORMAT, menuKey, itemKey),
-			jitEntities
+				issuer,
+				String.format(ITEM_LORE_FORMAT, menuKey, itemKey),
+				jitEntities
 		);
 	}
 

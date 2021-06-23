@@ -16,10 +16,10 @@ public final class SendingModes {
 	public static final String ACTION_BAR = "action-bar";
 
 	public static final Map<String, CompatibleSound> SOUNDS = ImmutableMap
-		.<String, CompatibleSound>builder()
-		.put(INFO, CompatibleSound.NOTE_PLING)
-		.put(SUCCESS, CompatibleSound.LEVEL_UP)
-		.put(ERROR, CompatibleSound.NOTE_BASS)
-		.build();
+			.<String, CompatibleSound>builder()
+			.put(INFO, CompatibleSound.NOTE_PLING)
+			.put(SUCCESS, CompatibleSound.LEVEL_UP)
+			.put(ERROR, CompatibleSound.NOTE_BASS)
+			.build();
 
 }

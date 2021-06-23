@@ -14,7 +14,7 @@ import java.util.logging.Level;
 public final class PacketChannelDuplexHandler extends ChannelDuplexHandler {
 
 	private static final Map<Class<?>, PacketInterceptor<?>> INTERCEPTORS =
-		new HashMap<>();
+			new HashMap<>();
 
 	private final Player player;
 
@@ -34,7 +34,7 @@ public final class PacketChannelDuplexHandler extends ChannelDuplexHandler {
 	private <T> void handleRead(ChannelHandlerContext ctx, T packet) throws Exception {
 		@SuppressWarnings("unchecked")
 		PacketInterceptor<T> interceptor =
-			(PacketInterceptor<T>) INTERCEPTORS.get(packet.getClass());
+				(PacketInterceptor<T>) INTERCEPTORS.get(packet.getClass());
 		if (interceptor == null) {
 			super.channelRead(ctx, packet);
 		} else {
@@ -42,7 +42,7 @@ public final class PacketChannelDuplexHandler extends ChannelDuplexHandler {
 				packet = interceptor.in(player, packet);
 			} catch (Throwable error) {
 				Bukkit.getLogger().log(Level.SEVERE, "[Packet Interceptor] Error while" +
-					" intercepting an ingoing packet.", error);
+						" intercepting an ingoing packet.", error);
 				return;
 			}
 			if (packet != null) {
@@ -59,7 +59,7 @@ public final class PacketChannelDuplexHandler extends ChannelDuplexHandler {
 	private <T> void handleWrite(ChannelHandlerContext ctx, T packet, ChannelPromise promise) throws Exception {
 		@SuppressWarnings("unchecked")
 		PacketInterceptor<T> interceptor =
-			(PacketInterceptor<T>) INTERCEPTORS.get(packet.getClass());
+				(PacketInterceptor<T>) INTERCEPTORS.get(packet.getClass());
 		if (interceptor == null) {
 			super.write(ctx, packet, promise);
 		} else {
@@ -67,7 +67,7 @@ public final class PacketChannelDuplexHandler extends ChannelDuplexHandler {
 				packet = interceptor.out(player, packet);
 			} catch (Throwable error) {
 				Bukkit.getLogger().log(Level.SEVERE, "[Packet Interceptor] Error while" +
-					" intercepting an outgoing packet.", error);
+						" intercepting an outgoing packet.", error);
 				return;
 			}
 			if (packet != null) {

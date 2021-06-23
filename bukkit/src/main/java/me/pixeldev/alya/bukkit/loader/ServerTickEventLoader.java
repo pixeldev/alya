@@ -20,29 +20,29 @@ public class ServerTickEventLoader implements Loader {
 	private int currentSeconds = SECOND;
 	private int currentMinutes = MINUTE;
 
-  @Override
-  public void load() {
-    Bukkit.getScheduler().runTaskTimer(
-        plugin,
-        () -> {
-          currentSeconds--;
-          currentMinutes--;
+	@Override
+	public void load() {
+		Bukkit.getScheduler().runTaskTimer(
+				plugin,
+				() -> {
+					currentSeconds--;
+					currentMinutes--;
 
-          PLUGIN_MANAGER.callEvent(new ServerTickEvent(ServerTickCause.TICK));
+					PLUGIN_MANAGER.callEvent(new ServerTickEvent(ServerTickCause.TICK));
 
-          if (currentSeconds == 0) {
-            currentSeconds = SECOND;
+					if (currentSeconds == 0) {
+						currentSeconds = SECOND;
 
-            PLUGIN_MANAGER.callEvent(new ServerTickEvent(ServerTickCause.SECOND));
-          }
+						PLUGIN_MANAGER.callEvent(new ServerTickEvent(ServerTickCause.SECOND));
+					}
 
-          if (currentMinutes == 0) {
-            currentMinutes = MINUTE;
+					if (currentMinutes == 0) {
+						currentMinutes = MINUTE;
 
-            PLUGIN_MANAGER.callEvent(new ServerTickEvent(ServerTickCause.MINUTE));
-          }
-        }, 0, 1
-    );
-  }
+						PLUGIN_MANAGER.callEvent(new ServerTickEvent(ServerTickCause.MINUTE));
+					}
+				}, 0, 1
+		);
+	}
 
 }

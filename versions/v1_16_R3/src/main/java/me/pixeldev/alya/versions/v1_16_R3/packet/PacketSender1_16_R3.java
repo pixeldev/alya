@@ -13,8 +13,8 @@ public class PacketSender1_16_R3 implements PacketSender {
 	@Override
 	public void sendPackets(Player player, Object... packets) {
 		PlayerConnection playerConnection = ((CraftPlayer) player)
-			.getHandle()
-			.playerConnection;
+				.getHandle()
+				.playerConnection;
 
 		for (Object packet : packets) {
 			playerConnection.sendPacket((Packet<?>) packet);

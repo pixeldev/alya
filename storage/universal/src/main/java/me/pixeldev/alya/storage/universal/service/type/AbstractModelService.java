@@ -1,199 +1,193 @@
 package me.pixeldev.alya.storage.universal.service.type;
 
-import me.pixeldev.alya.jdk.concurrent.AsyncExecutor;
+import me.pixeldev.alya.jdk.concurrent.observer.Observable;
+import me.pixeldev.alya.jdk.concurrent.observer.Observables;
 import me.pixeldev.alya.storage.universal.Model;
 import me.pixeldev.alya.storage.universal.service.CompleteModelService;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 public abstract class AbstractModelService<T extends Model>
-    implements CompleteModelService<T> {
+		implements CompleteModelService<T> {
 
-	private final AsyncExecutor executor;
+	protected final CompleteModelService<T> cacheModelService;
 
-  protected final CompleteModelService<T> cacheModelService;
+	public AbstractModelService(CompleteModelService<T> cacheModelService) {
+		this.cacheModelService = cacheModelService;
+	}
 
-  public AbstractModelService(AsyncExecutor executor,
-                              CompleteModelService<T> cacheModelService) {
-    this.executor = executor;
-    this.cacheModelService = cacheModelService;
-  }
+	@Override
+	public Observable<Boolean> existsByCacheIdentifier(String value) {
+		return Observables.safeObservable(() -> existsByCacheIdentifierSync(value));
+	}
 
-  @Override
-  public CompletableFuture<Boolean> existsByCacheIdentifier(String value) {
-    return executor.supply(
-        () -> existsByCacheIdentifierSync(value)
-    );
-  }
+	@Override
+	public boolean existsByCacheIdentifierSync(String value) throws Exception {
+		return findByCacheIdentifierSync(value, false).isPresent();
+	}
 
-  @Override
-  public boolean existsByCacheIdentifierSync(String value) throws Exception {
-    return findByCacheIdentifierSync(value, false).isPresent();
-  }
+	@Override
+	public Observable<Boolean> exists(String id) {
+		return Observables.safeObservable(() -> existsSync(id));
+	}
 
-  @Override
-  public CompletableFuture<Boolean> exists(String id) {
-    return executor.supply(
-        () -> existsSync(id)
-    );
-  }
+	@Override
+	public boolean existsSync(String id) throws Exception {
+		return findSync(id, false).isPresent();
+	}
 
-  @Override
-  public boolean existsSync(String id) throws Exception {
-    return findSync(id, false).isPresent();
-  }
+	@Override
+	public CompleteModelService<T> getCacheModelService() {
+		return cacheModelService;
+	}
 
-  @Override
-  public CompleteModelService<T> getCacheModelService() {
-    return cacheModelService;
-  }
+	@Override
+	public Observable<Void> delete(String id) {
+		return Observables.safeObservable(() -> deleteSync(id));
+	}
 
-  @Override
-  public CompletableFuture<Void> delete(String id) {
-    return executor.run(
-        () -> deleteSync(id)
-    );
-  }
+	@Override
+	public void deleteSync(String id) throws Exception {
+		Optional<T> modelOptional = findSync(id, true);
 
-  @Override
-  public void deleteSync(String id) throws Exception {
-    findSync(id, true)
-        .ifPresent(this::delete);
-  }
+		if (!modelOptional.isPresent()) {
+			return;
+		}
 
-  @Override
-  public CompletableFuture<Void> delete(T model) {
-    return executor.run(
-        () -> deleteSync(model)
-    );
-  }
+		deleteSync(modelOptional.get());
+	}
 
-  @Override
-  public void deleteSync(T model) throws Exception {
-    if (internalDelete(model)) {
-      cacheModelService.deleteSync(model);
-    }
-  }
+	@Override
+	public Observable<Void> delete(T model) {
+		return Observables.safeObservable(() -> deleteSync(model));
+	}
 
-  @Override
-  public CompletableFuture<Optional<T>> findByCacheIdentifier(String value,
-                                                              boolean findInDatabaseToo) {
-    return executor.supply(
-        () -> findByCacheIdentifierSync(value, findInDatabaseToo)
-    );
-  }
+	@Override
+	public void deleteSync(T model) throws Exception {
+		if (internalDelete(model)) {
+			cacheModelService.deleteSync(model);
+		}
+	}
 
-  @Override
-  public Optional<T> findByCacheIdentifierSync(String value,
-                                               boolean findInDatabaseToo) throws Exception {
-    return cacheModelService.findByCacheIdentifierSync(value, findInDatabaseToo);
-  }
+	@Override
+	public Observable<Optional<T>> findByCacheIdentifier(String value,
+																											 boolean findInDatabaseToo) {
+		return Observables.safeObservable(
+				() -> findByCacheIdentifierSync(value, findInDatabaseToo),
+				error -> {
+					error.printStackTrace();
+					return Optional.empty();
+				}
+		);
+	}
 
-  @Override
-  public CompletableFuture<Optional<T>> find(String id,
-                                             boolean findInDatabaseToo) {
-    return executor.supply(
-        () -> findSync(id, findInDatabaseToo)
-    );
-  }
+	@Override
+	public Optional<T> findByCacheIdentifierSync(String value,
+																							 boolean findInDatabaseToo) throws Exception {
+		return cacheModelService.findByCacheIdentifierSync(value, findInDatabaseToo);
+	}
 
-  @Override
-  public Optional<T> findSync(String id,
-                              boolean findInDatabaseToo) throws Exception {
-    Optional<T> foundModel = cacheModelService.findSync(id, findInDatabaseToo);
+	@Override
+	public Observable<Optional<T>> find(String id,
+																			boolean findInDatabaseToo) {
+		return Observables.safeObservable(
+				() -> findSync(id, findInDatabaseToo),
+				error -> {
+					error.printStackTrace();
+					return Optional.empty();
+				}
+		);
+	}
 
-    if (!foundModel.isPresent()) {
-      if (findInDatabaseToo) {
-        Optional<T> foundModelInDatabase = internalFind(id);
+	@Override
+	public Optional<T> findSync(String id,
+															boolean findInDatabaseToo) throws Exception {
+		Optional<T> foundModel = cacheModelService.findSync(id, findInDatabaseToo);
 
-        if (foundModelInDatabase.isPresent()) {
-          T model = foundModelInDatabase.get();
+		if (!foundModel.isPresent()) {
+			if (findInDatabaseToo) {
+				Optional<T> foundModelInDatabase = internalFind(id);
 
-          cacheModelService.uploadSync(model, false);
-        }
+				if (foundModelInDatabase.isPresent()) {
+					T model = foundModelInDatabase.get();
 
-        return foundModelInDatabase;
-      } else {
-        return Optional.empty();
-      }
-    }
+					cacheModelService.uploadSync(model, false);
+				}
 
-    return foundModel;
-  }
+				return foundModelInDatabase;
+			} else {
+				return Optional.empty();
+			}
+		}
 
-  @Override
-  public CompletableFuture<List<T>> findAllFromCache() {
-    return executor.supply(
-        this::findAllFromCacheSync
-    );
-  }
+		return foundModel;
+	}
 
-  @Override
-  public List<T> findAllFromCacheSync() {
-    return cacheModelService.findAllFromCacheSync();
-  }
+	@Override
+	public Observable<List<T>> findAllFromCache() {
+		return new Observable<>(this::findAllFromCacheSync);
+	}
 
-  @Override
-  public CompletableFuture<List<T>> findAll(Consumer<T> postLoad) {
-    return executor.supply(
-        () -> findAllSync(postLoad)
-    );
-  }
+	@Override
+	public List<T> findAllFromCacheSync() {
+		return cacheModelService.findAllFromCacheSync();
+	}
 
-  @Override
-  public List<T> findAllSync(Consumer<T> postLoad) throws Exception {
-    List<T> foundModels = internalFindAll();
+	@Override
+	public Observable<List<T>> findAll(Consumer<T> postLoad) {
+		return Observables.safeObservable(() -> findAllSync(postLoad));
+	}
 
-    for (T model : foundModels) {
-      postLoad.accept(model);
-      foundModels.add(model);
-      cacheModelService.uploadSync(model, false);
-    }
+	@Override
+	public List<T> findAllSync(Consumer<T> postLoad) throws Exception {
+		List<T> foundModels = internalFindAll();
 
-    return foundModels;
-  }
+		for (T model : foundModels) {
+			postLoad.accept(model);
+			foundModels.add(model);
+			cacheModelService.uploadSync(model, false);
+		}
 
-  @Override
-  public CompletableFuture<Void> upload(T model, boolean removeFromCache) {
-    return executor.run(
-        () -> uploadSync(model, removeFromCache)
-    );
-  }
+		return foundModels;
+	}
 
-  @Override
-  public void uploadSync(T model, boolean removeFromCache) throws Exception {
-    if (!removeFromCache) {
-      cacheModelService.uploadSync(model, false);
-    } else {
-      cacheModelService.deleteSync(model);
-    }
+	@Override
+	public Observable<Void> upload(T model, boolean removeFromCache) {
+		return Observables.safeObservable(() -> uploadSync(model, removeFromCache));
+	}
 
-    internalUpload(model);
-  }
+	@Override
+	public void uploadSync(T model, boolean removeFromCache) throws Exception {
+		if (!removeFromCache) {
+			cacheModelService.uploadSync(model, false);
+		} else {
+			cacheModelService.deleteSync(model);
+		}
 
-  @Override
-  public CompletableFuture<Void> uploadAll(Consumer<T> prePersist) {
-    return executor.run(
-        () -> uploadAllSync(prePersist)
-    );
-  }
+		internalUpload(model);
+	}
 
-  @Override
-  public void uploadAllSync(Consumer<T> prePersist) throws Exception {
-    for (T model : findAllFromCacheSync()) {
-      prePersist.accept(model);
-      uploadSync(model, true);
-    }
-  }
+	@Override
+	public Observable<Void> uploadAll(Consumer<T> prePersist) {
+		return Observables.safeObservable(() -> uploadAllSync(prePersist));
+	}
 
-  protected abstract Optional<T> internalFind(String id) throws Exception;
+	@Override
+	public void uploadAllSync(Consumer<T> prePersist) throws Exception {
+		for (T model : findAllFromCacheSync()) {
+			prePersist.accept(model);
+			uploadSync(model, true);
+		}
+	}
 
-  protected abstract boolean internalDelete(T model) throws Exception;
+	protected abstract Optional<T> internalFind(String id) throws Exception;
 
-  protected abstract List<T> internalFindAll() throws Exception;
+	protected abstract boolean internalDelete(T model) throws Exception;
 
-  protected abstract void internalUpload(T model) throws Exception;
+	protected abstract List<T> internalFindAll() throws Exception;
+
+	protected abstract void internalUpload(T model) throws Exception;
+
 }

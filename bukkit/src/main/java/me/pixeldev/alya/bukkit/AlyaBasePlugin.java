@@ -16,12 +16,12 @@ public abstract class AlyaBasePlugin extends JavaPlugin {
 
 	public void onLoad() {
 		Injector.create(getMainModule(),
-			new MessageModule(),
-			NMSModuleProvider.getModule(
-				"me.pixeldev.alya.versions"
-			)
+				new MessageModule(),
+				NMSModuleProvider.getModule(
+						"me.pixeldev.alya.versions"
+				)
 		)
-			.injectMembers(this);
+				.injectMembers(this);
 	}
 
 	protected abstract Module getMainModule();

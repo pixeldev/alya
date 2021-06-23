@@ -11,28 +11,28 @@ import java.util.concurrent.Executors;
 @Singleton
 public final class AsyncExecutor {
 
-  private static final Executor EXECUTOR = Executors.newCachedThreadPool();
+	public static final Executor EXECUTOR = Executors.newCachedThreadPool();
 
-  public CompletableFuture<Void> run(FailableConsumer runnable) {
-    return CompletableFuture.runAsync(() -> {
-      try {
-        runnable.accept();
-      } catch (Throwable throwable) {
-        throwable.printStackTrace();
-      }
-    }, EXECUTOR);
-  }
+	public CompletableFuture<Void> run(FailableConsumer runnable) {
+		return CompletableFuture.runAsync(() -> {
+			try {
+				runnable.accept();
+			} catch (Throwable throwable) {
+				throwable.printStackTrace();
+			}
+		}, EXECUTOR);
+	}
 
-  public <T> CompletableFuture<T> supply(Callable<T> supplier) {
-    return CompletableFuture.supplyAsync(() -> {
-      try {
-        return supplier.call();
-      } catch (Throwable throwable) {
-        throwable.printStackTrace();
+	public <T> CompletableFuture<T> supply(Callable<T> supplier) {
+		return CompletableFuture.supplyAsync(() -> {
+			try {
+				return supplier.call();
+			} catch (Throwable throwable) {
+				throwable.printStackTrace();
 
-        return null;
-      }
-    }, EXECUTOR);
-  }
+				return null;
+			}
+		}, EXECUTOR);
+	}
 
 }

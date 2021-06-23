@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import javax.inject.Inject;
 
 public abstract class AbstractTitleSender
-	implements TitleSender {
+		implements TitleSender {
 
 	@Inject private MessageHandler messageHandler;
 
@@ -21,11 +21,11 @@ public abstract class AbstractTitleSender
 		}
 
 		return TitleDisplay.builder(title)
-			.setSubtitle(subTitle)
-			.setFadeIn(titleDisplay.getFadeIn())
-			.setStay(titleDisplay.getStay())
-			.setFadeOut(titleDisplay.getFadeOut())
-			.build();
+				.setSubtitle(subTitle)
+				.setFadeIn(titleDisplay.getFadeIn())
+				.setStay(titleDisplay.getStay())
+				.setFadeOut(titleDisplay.getFadeOut())
+				.build();
 	}
 
 }

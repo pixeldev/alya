@@ -13,7 +13,7 @@ public final class MethodProvider {
 	}
 
 	public static void invoke(Method method, Object instance)
-		throws InvocationTargetException, IllegalAccessException {
+			throws InvocationTargetException, IllegalAccessException {
 		boolean accessible = method.isAccessible();
 
 		try {

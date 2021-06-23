@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 public final class LoggerUtil {
 
 	private static final Logger LOGGER =
-		Logger.getLogger("alya-storage");
+			Logger.getLogger("alya-storage");
 
 	public static void applyCommonErrorHandler(Throwable error,
 																						 String processMessage) {

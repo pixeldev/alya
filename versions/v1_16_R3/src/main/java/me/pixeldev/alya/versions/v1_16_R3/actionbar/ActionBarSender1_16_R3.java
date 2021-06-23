@@ -12,8 +12,8 @@ public class ActionBarSender1_16_R3 extends AbstractActionBarSender {
 	@Override
 	public void sendActionBar(Player player, String message) {
 		player.spigot().sendMessage(
-			ChatMessageType.ACTION_BAR,
-			new TextComponent(message)
+				ChatMessageType.ACTION_BAR,
+				new TextComponent(message)
 		);
 	}
 

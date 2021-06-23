@@ -7,23 +7,23 @@ import java.lang.reflect.Method;
 
 public class ModelMeta<T extends Model> {
 
-  private final Method prePersistMethod;
-  private final Class<T> type;
+	private final Method prePersistMethod;
+	private final Class<T> type;
 
-  public ModelMeta(Class<T> type) {
-    this.type = type;
-    prePersistMethod = MethodProvider.getMethodByAnnotation(
-        type,
-        PrePersist.class
-    ).orElse(null);
-  }
+	public ModelMeta(Class<T> type) {
+		this.type = type;
+		prePersistMethod = MethodProvider.getMethodByAnnotation(
+				type,
+				PrePersist.class
+		).orElse(null);
+	}
 
-  public Class<T> getType() {
-    return type;
-  }
+	public Class<T> getType() {
+		return type;
+	}
 
-  public Method getPrePersistMethod() {
-    return prePersistMethod;
-  }
+	public Method getPrePersistMethod() {
+		return prePersistMethod;
+	}
 
 }

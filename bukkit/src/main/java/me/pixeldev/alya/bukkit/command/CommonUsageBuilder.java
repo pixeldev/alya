@@ -23,8 +23,8 @@ public final class CommonUsageBuilder extends DefaultUsageBuilder {
 	public Component getUsage(CommandContext commandContext) {
 		Component component = super.getUsage(commandContext);
 		CommandSender commandSender = commandContext.getObject(
-			CommandSender.class,
-			BukkitCommandManager.SENDER_NAMESPACE
+				CommandSender.class,
+				BukkitCommandManager.SENDER_NAMESPACE
 		);
 
 		Object entity = "es";
@@ -33,7 +33,7 @@ public final class CommonUsageBuilder extends DefaultUsageBuilder {
 		}
 
 		return TextComponent.of(messageHandler.get(entity, "commands.translation.usage"))
-			.append(component.color(TextColor.GOLD));
+				.append(component.color(TextColor.GOLD));
 	}
 
 }

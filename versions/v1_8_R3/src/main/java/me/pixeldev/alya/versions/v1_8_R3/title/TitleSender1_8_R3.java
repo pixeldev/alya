@@ -28,14 +28,14 @@ public class TitleSender1_8_R3 extends AbstractTitleSender {
 		Object[] packets = new Packet[2];
 
 		packets[0] = createTitlePacket(
-			PacketPlayOutTitle.EnumTitleAction.TITLE, buildComponent(title),
-			fadeIn, stay, fadeOut
+				PacketPlayOutTitle.EnumTitleAction.TITLE, buildComponent(title),
+				fadeIn, stay, fadeOut
 		);
 
 		if (subTitle != null) {
 			packets[1] = createTitlePacket(
-				PacketPlayOutTitle.EnumTitleAction.SUBTITLE, buildComponent(subTitle),
-				fadeIn, stay, fadeOut
+					PacketPlayOutTitle.EnumTitleAction.SUBTITLE, buildComponent(subTitle),
+					fadeIn, stay, fadeOut
 			);
 		}
 
@@ -50,8 +50,8 @@ public class TitleSender1_8_R3 extends AbstractTitleSender {
 																							 IChatBaseComponent baseComponent,
 																							 int fadeIn, int stay, int fadeOut) {
 		return new PacketPlayOutTitle(
-			action, baseComponent,
-			fadeIn, stay, fadeOut
+				action, baseComponent,
+				fadeIn, stay, fadeOut
 		);
 	}
 

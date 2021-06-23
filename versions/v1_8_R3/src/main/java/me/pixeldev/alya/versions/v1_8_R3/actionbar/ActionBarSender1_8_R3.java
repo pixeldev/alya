@@ -17,8 +17,8 @@ public class ActionBarSender1_8_R3 extends AbstractActionBarSender {
 	@Override
 	public void sendActionBar(Player player, String message) {
 		PacketPlayOutChat packetPlayOutChat = new PacketPlayOutChat(
-			IChatBaseComponent.ChatSerializer.a("{\"text\":\"" + message + "\"}"),
-			(byte) 2
+				IChatBaseComponent.ChatSerializer.a("{\"text\":\"" + message + "\"}"),
+				(byte) 2
 		);
 
 		packetSender.sendPacket(player, packetPlayOutChat);
