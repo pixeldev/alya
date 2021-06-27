@@ -5,10 +5,13 @@ import me.pixeldev.alya.jdk.concurrent.AsyncExecutor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class Observable<T> {
+
+	private static final Observable<?> EMPTY_OBSERVABLE = new Observable<>(() -> null);
 
 	private final Supplier<T> supplier;
 	private final List<Subscription<T>> subscriptions;
@@ -42,8 +45,12 @@ public class Observable<T> {
 		return function.apply(new Pipe<>(supplier)).buildObservable();
 	}
 
-	public void query() {
-		CompletableFuture.supplyAsync(supplier, AsyncExecutor.EXECUTOR)
+	public CompletableFuture<T> query() {
+		return query(AsyncExecutor.EXECUTOR);
+	}
+
+	public CompletableFuture<T> query(Executor executor) {
+		return CompletableFuture.supplyAsync(supplier, executor)
 				.whenComplete((response, error) -> {
 					for (Subscription<T> subscription : subscriptions) {
 						Observer<T> observer = subscription.getObserver();
@@ -56,6 +63,11 @@ public class Observable<T> {
 						}
 					}
 				});
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T> Observable<T> empty() {
+		return (Observable<T>) EMPTY_OBSERVABLE;
 	}
 
 }
