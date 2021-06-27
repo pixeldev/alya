@@ -3,7 +3,7 @@ package me.pixeldev.alya.bukkit.translation.sender;
 import me.pixeldev.alya.abstraction.actionbar.ActionBarSender;
 import me.pixeldev.alya.abstraction.title.TitleDisplay;
 import me.pixeldev.alya.abstraction.title.TitleSender;
-import me.pixeldev.alya.bukkit.AlyaBasePlugin;
+import me.pixeldev.alya.bukkit.BukkitBasePlugin;
 import me.pixeldev.alya.bukkit.sound.CompatibleSound;
 
 import me.yushust.message.send.MessageSender;
@@ -46,7 +46,7 @@ public class CommonMessageSender implements MessageSender<Player> {
 	@Override
 	public void send(Player receiver, String mode, StringList messages) {
 		if (mode.equals(SendingModes.RANDOM)) {
-			receiver.sendMessage(messages.get(AlyaBasePlugin.RANDOM.nextInt(
+			receiver.sendMessage(messages.get(BukkitBasePlugin.RANDOM.nextInt(
 					messages.size()
 			)));
 

@@ -11,3 +11,6 @@ rootProject.name = 'alya'
 ['universal', 'gson'].forEach {
 	include "storage:${it}"
 }
+include 'api'
+include 'bungeecord'
+

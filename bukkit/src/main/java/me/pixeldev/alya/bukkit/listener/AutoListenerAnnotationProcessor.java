@@ -27,7 +27,7 @@ public class AutoListenerAnnotationProcessor extends AbstractProcessor {
 			out.println("package " + packageName + ";");
 			out.println();
 
-			out.println("public class " + className + " implements me.pixeldev.alya.bukkit.loader.Loader {");
+			out.println("public class " + className + " implements me.pixeldev.alya.api.loader.Loader {");
 			out.println();
 
 			out.println("  @javax.inject.Inject private org.bukkit.plugin.Plugin plugin; ");

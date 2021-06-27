@@ -1,10 +1,6 @@
 dependencies {
-	api 'me.fixeddev:commandflow-bukkit:0.4.0'
-	api 'team.unnamed.gui:core:2.3.1-SNAPSHOT'
-	api 'me.yushust.inject:core:0.4.5-SNAPSHOT'
 	api 'me.yushust.message:sourcetype-bukkit-yml:6.0.17'
-	api 'me.yushust.message:core:6.0.17'
-
+	api project(':api')
 	api project(':bukkit-abstraction')
 	['v1_8_R3', 'v1_16_R3'].forEach {
 		runtimeOnly project(":versions:${it}")

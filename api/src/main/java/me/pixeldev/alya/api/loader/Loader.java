@@ -1,4 +1,4 @@
-package me.pixeldev.alya.bukkit.loader;
+package me.pixeldev.alya.api.loader;
 
 public interface Loader {
 

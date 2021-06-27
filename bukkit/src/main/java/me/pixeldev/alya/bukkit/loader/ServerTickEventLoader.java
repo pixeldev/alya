@@ -1,5 +1,6 @@
 package me.pixeldev.alya.bukkit.loader;
 
+import me.pixeldev.alya.api.loader.Loader;
 import me.pixeldev.alya.bukkit.tick.ServerTickCause;
 import me.pixeldev.alya.bukkit.tick.ServerTickEvent;
 

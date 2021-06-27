@@ -7,7 +7,7 @@ subprojects {
 	apply plugin: 'maven-publish'
 
 	group 'me.pixeldev.alya'
-	version '1.1.1-SNAPSHOT'
+	version '1.2.0-SNAPSHOT'
 
 	publishing {
 		repositories {
@@ -45,6 +45,7 @@ subprojects {
 		maven { url = 'https://repo.unnamed.team/repository/unnamed-releases/' }
 		maven { url = 'https://repo.unnamed.team/repository/unnamed-snapshots/' }
 		maven { url = 'https://repo.codemc.io/repository/nms/' }
+		maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
 
 		mavenCentral()
 	}

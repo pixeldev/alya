@@ -1,0 +1,6 @@
+dependencies {
+	api 'me.fixeddev:commandflow-bukkit:0.4.0'
+	api 'team.unnamed.gui:core:2.3.1-SNAPSHOT'
+	api 'me.yushust.inject:core:0.4.5-SNAPSHOT'
+	api 'me.yushust.message:core:6.0.17'
+}
