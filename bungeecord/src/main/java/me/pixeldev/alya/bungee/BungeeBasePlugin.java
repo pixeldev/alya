@@ -2,6 +2,7 @@ package me.pixeldev.alya.bungee;
 
 import me.pixeldev.alya.api.AlyaBasePlugin;
 
+import me.pixeldev.alya.bungee.translation.MessageModule;
 import me.yushust.inject.Injector;
 
 import net.md_5.bungee.api.plugin.Plugin;
@@ -16,7 +17,7 @@ public abstract class BungeeBasePlugin
 
 	@Override
 	public void onLoad() {
-		Injector.create(getMainModule()).injectMembers(this);
+		Injector.create(getMainModule(), new MessageModule()).injectMembers(this);
 	}
 
 }

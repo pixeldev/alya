@@ -7,12 +7,16 @@ import java.util.concurrent.CompletableFuture;
 
 public interface DeleteService<T extends Model> {
 
-	Observable<Void> delete(T model);
+	default Observable<Boolean> delete(T model) {
+		return delete(model.getId());
+	}
 
-	void deleteSync(T model) throws Exception;
+	default boolean deleteSync(T model) throws Exception {
+		return deleteSync(model.getId());
+	}
 
-	Observable<Void> delete(String id);
+	Observable<Boolean> delete(String id);
 
-	void deleteSync(String id) throws Exception;
+	boolean deleteSync(String id) throws Exception;
 
 }

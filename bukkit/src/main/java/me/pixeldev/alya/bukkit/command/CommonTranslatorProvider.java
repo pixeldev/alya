@@ -22,12 +22,7 @@ public final class CommonTranslatorProvider implements TranslationProvider {
 				BukkitCommandManager.SENDER_NAMESPACE
 		);
 
-		Object entity = "es";
-		if (commandSender instanceof Player) {
-			entity = commandSender;
-		}
-
-		return messageHandler.get(entity, key);
+		return messageHandler.get(commandSender, "commands.translation." + key);
 	}
 
 }

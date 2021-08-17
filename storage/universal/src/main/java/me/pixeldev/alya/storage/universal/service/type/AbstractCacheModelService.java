@@ -3,25 +3,27 @@ package me.pixeldev.alya.storage.universal.service.type;
 import me.pixeldev.alya.jdk.concurrent.observer.Observable;
 import me.pixeldev.alya.storage.universal.Model;
 import me.pixeldev.alya.storage.universal.internal.CacheIdentifierResolver;
+import me.pixeldev.alya.storage.universal.internal.meta.ModelMeta;
 import me.pixeldev.alya.storage.universal.service.CompleteModelService;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
-abstract class AbstractLocalModelService<T extends Model>
-		implements CompleteModelService<T> {
+public abstract class AbstractCacheModelService<T extends Model>
+		extends AbstractModelService<T> {
 
 	private static final UnsupportedOperationException UNSUPPORTED_EXCEPTION
 			= new UnsupportedOperationException("Local model service cannot perform this action.");
 
 	private final CacheIdentifierResolver<T> resolver;
 
-	public AbstractLocalModelService() {
-		resolver = new CacheIdentifierResolver<>();
+	public AbstractCacheModelService(ModelMeta<T> modelMeta) {
+		if (modelMeta.canCreateCacheResolver()) {
+			resolver = new CacheIdentifierResolver<>();
+		} else {
+			resolver = null;
+		}
 	}
 
 	@Override
@@ -30,10 +32,12 @@ abstract class AbstractLocalModelService<T extends Model>
 	}
 
 	@Override
-	public boolean existsByCacheIdentifierSync(String value) {
-		String modelId = resolver.resolve(value);
+	public boolean existsByCacheIdentifierSync(String value) throws Exception {
+		if (resolver == null) {
+			return false;
+		}
 
-		return cache().containsKey(modelId);
+		return internalFind(resolver.resolve(value)).isPresent();
 	}
 
 	@Override
@@ -42,8 +46,8 @@ abstract class AbstractLocalModelService<T extends Model>
 	}
 
 	@Override
-	public boolean existsSync(String id) {
-		return cache().containsKey(id);
+	public boolean existsSync(String id) throws Exception {
+		return internalFind(id).isPresent();
 	}
 
 	@Override
@@ -52,42 +56,57 @@ abstract class AbstractLocalModelService<T extends Model>
 	}
 
 	@Override
-	public Observable<Void> delete(String id) {
+	public Observable<Boolean> delete(String id) {
 		throw UNSUPPORTED_EXCEPTION;
 	}
 
 	@Override
-	public void deleteSync(String id) {
-		findSync(id, false).ifPresent(this::deleteSync);
+	public boolean deleteSync(String id) throws Exception {
+		if (resolver == null) {
+			return internalDelete(id);
+		} else {
+			Optional<T> modelOptional = internalFind(id);
+
+			if (!modelOptional.isPresent()) {
+				return false;
+			}
+
+			return deleteSync(modelOptional.get());
+		}
 	}
 
 	@Override
-	public Observable<Void> delete(T model) {
+	public Observable<Boolean> delete(T model) {
 		throw UNSUPPORTED_EXCEPTION;
 	}
 
 	@Override
-	public void deleteSync(T model) {
-		resolver.removeResolver(model);
-		cache().remove(model.getId());
+	public boolean deleteSync(T model) throws Exception {
+		if (resolver != null) {
+			resolver.removeResolver(model);
+		}
+
+		return internalDelete(model.getId());
 	}
 
 	@Override
-	public Observable<Optional<T>> findByCacheIdentifier(String value,
-																											 boolean findInDatabaseToo) {
+	public Observable<Optional<T>> findByCacheIdentifier(String value) {
 		throw UNSUPPORTED_EXCEPTION;
 	}
 
 	@Override
-	public Optional<T> findByCacheIdentifierSync(String value,
-																							 boolean findInDatabaseToo) {
+	public Optional<T> findByCacheIdentifierSync(String value) throws Exception {
+		if (resolver == null) {
+			return Optional.empty();
+		}
+
 		String modelId = resolver.resolve(value);
 
 		if (modelId == null) {
 			return Optional.empty();
 		}
 
-		return Optional.ofNullable(cache().get(modelId));
+		return internalFind(modelId);
 	}
 
 	@Override
@@ -98,8 +117,8 @@ abstract class AbstractLocalModelService<T extends Model>
 
 	@Override
 	public Optional<T> findSync(String id,
-															boolean findInDatabaseToo) {
-		return Optional.ofNullable(cache().get(id));
+															boolean findInDatabaseToo) throws Exception {
+		return internalFind(id);
 	}
 
 	@Override
@@ -108,8 +127,8 @@ abstract class AbstractLocalModelService<T extends Model>
 	}
 
 	@Override
-	public List<T> findAllFromCacheSync() {
-		return new ArrayList<>(cache().values());
+	public List<T> findAllFromCacheSync() throws Exception {
+		return internalFindAll(model -> {});
 	}
 
 	@Override
@@ -128,9 +147,12 @@ abstract class AbstractLocalModelService<T extends Model>
 	}
 
 	@Override
-	public void uploadSync(T model, boolean removeFromCache) {
-		resolver.addResolver(model);
-		cache().put(model.getId(), model);
+	public void uploadSync(T model, boolean removeFromCache) throws Exception {
+		if (resolver != null) {
+			resolver.addResolver(model);
+		}
+
+		internalUpload(model);
 	}
 
 	@Override
@@ -142,7 +164,5 @@ abstract class AbstractLocalModelService<T extends Model>
 	public void uploadAllSync(Consumer<T> prePersist) {
 		throw UNSUPPORTED_EXCEPTION;
 	}
-
-	protected abstract Map<String, T> cache();
 
 }

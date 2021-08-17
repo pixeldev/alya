@@ -109,9 +109,9 @@ public class Trying<T> {
 		}
 	}
 
-	public static Trying<Void> ofAction(FailableConsumer action) {
+	public static Trying<Void> ofAction(FailableRunnable action) {
 		try {
-			action.accept();
+			action.run();
 
 			return success(null);
 		} catch (Throwable throwable) {

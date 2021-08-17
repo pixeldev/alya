@@ -12,7 +12,7 @@ import java.util.Optional;
 public class ItemNBTTagHandler1_16_R3 implements ItemNBTTagHandler {
 	@Override
 	public boolean hasTag(ItemStack source, String key) {
-		return getTag(source, key).isPresent();
+		return getTagCompound(asNmsItem(source)).hasKey(key);
 	}
 
 	@Override

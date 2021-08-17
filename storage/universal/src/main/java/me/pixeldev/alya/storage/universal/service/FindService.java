@@ -10,9 +10,9 @@ import java.util.function.Consumer;
 
 public interface FindService<T extends Model> {
 
-	Observable<Optional<T>> findByCacheIdentifier(String value, boolean findInDatabaseToo);
+	Observable<Optional<T>> findByCacheIdentifier(String value);
 
-	Optional<T> findByCacheIdentifierSync(String value, boolean findInDatabaseToo) throws Exception;
+	Optional<T> findByCacheIdentifierSync(String value) throws Exception;
 
 	Observable<Optional<T>> find(String id, boolean findInDatabaseToo);
 
@@ -20,7 +20,7 @@ public interface FindService<T extends Model> {
 
 	Observable<List<T>> findAllFromCache();
 
-	List<T> findAllFromCacheSync();
+	List<T> findAllFromCacheSync() throws Exception;
 
 	Observable<List<T>> findAll(Consumer<T> postLoad);
 

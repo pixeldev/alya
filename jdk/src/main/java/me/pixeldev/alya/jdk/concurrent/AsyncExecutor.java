@@ -1,6 +1,6 @@
 package me.pixeldev.alya.jdk.concurrent;
 
-import me.pixeldev.alya.jdk.functional.FailableConsumer;
+import me.pixeldev.alya.jdk.functional.FailableRunnable;
 
 import javax.inject.Singleton;
 import java.util.concurrent.Callable;
@@ -13,10 +13,10 @@ public final class AsyncExecutor {
 
 	public static final Executor EXECUTOR = Executors.newCachedThreadPool();
 
-	public CompletableFuture<Void> run(FailableConsumer runnable) {
+	public CompletableFuture<Void> run(FailableRunnable runnable) {
 		return CompletableFuture.runAsync(() -> {
 			try {
-				runnable.accept();
+				runnable.run();
 			} catch (Throwable throwable) {
 				throwable.printStackTrace();
 			}

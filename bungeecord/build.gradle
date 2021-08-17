@@ -1,4 +1,5 @@
 dependencies {
 	api project(':api')
+	api 'me.fixeddev:commandflow-bungee:0.4.0'
 	compileOnly 'net.md-5:bungeecord-api:1.17-R0.1-SNAPSHOT'
 }

@@ -1,9 +1,12 @@
 package me.pixeldev.alya.jdk.statistic;
 
+import java.beans.ConstructorProperties;
+
 public class ShortStatistic {
 
 	private short value;
 
+	@ConstructorProperties("value")
 	public ShortStatistic(short value) {
 		this.value = value;
 	}
@@ -18,6 +21,10 @@ public class ShortStatistic {
 
 	public short decrement(short value) {
 		return this.value -= value;
+	}
+
+	public short set(short value) {
+		return this.value = value;
 	}
 
 	public boolean majorOrEqualThan(short otherValue) {

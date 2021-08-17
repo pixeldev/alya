@@ -2,43 +2,37 @@ package me.pixeldev.alya.storage.gson;
 
 import com.google.gson.Gson;
 
+import me.pixeldev.alya.jdk.functional.FailableConsumer;
 import me.pixeldev.alya.jdk.reflect.MethodProvider;
 import me.pixeldev.alya.storage.gson.meta.JsonModelMeta;
 import me.pixeldev.alya.storage.universal.Model;
 import me.pixeldev.alya.storage.universal.internal.LoggerUtil;
 import me.pixeldev.alya.storage.universal.internal.meta.ModelMeta;
-import me.pixeldev.alya.storage.universal.service.type.AbstractModelService;
-import me.pixeldev.alya.storage.universal.service.type.LocalModelService;
+import me.pixeldev.alya.storage.universal.service.type.AbstractRemoteModelService;
 
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 public class JsonModelService<T extends Model>
-		extends AbstractModelService<T> {
+		extends AbstractRemoteModelService<T> {
 
 	private final Gson mapper;
 	private final File modelFolder;
 
-	private final Class<T> classType;
-	private final Method prePersistMethod;
-
 	public JsonModelService(Gson mapper,
 													Plugin plugin,
 													ModelMeta<T> modelMeta) {
-		super(new LocalModelService<>());
+		super(modelMeta);
 
 		this.mapper = mapper;
-		this.classType = modelMeta.getType();
-
-		prePersistMethod = modelMeta.getPrePersistMethod();
 		modelFolder = new File(
 				plugin.getDataFolder(), ((JsonModelMeta<T>) modelMeta).getFolderName()
 		);
@@ -49,28 +43,17 @@ public class JsonModelService<T extends Model>
 	}
 
 	@Override
-	public void deleteSync(T model) throws Exception {
-		File file = new File(modelFolder, model.getId() + ".json");
-
-		if (file.delete()) {
-			cacheModelService.deleteSync(model);
-		}
-	}
-
-	@Override
 	protected Optional<T> internalFind(String id) throws Exception {
 		return internalFind(new File(modelFolder, id + ".json"));
 	}
 
 	@Override
-	protected boolean internalDelete(T model) {
-		File file = new File(modelFolder, model.getId() + ".json");
-
-		return file.delete();
+	protected boolean internalDelete(String id) {
+		return new File(modelFolder, id + ".json").delete();
 	}
 
 	@Override
-	protected List<T> internalFindAll() throws Exception {
+	protected List<T> internalFindAll(FailableConsumer<T> consumer) throws Exception {
 		File[] listFiles = modelFolder.listFiles();
 
 		if (listFiles == null) {
@@ -86,7 +69,10 @@ public class JsonModelService<T extends Model>
 				continue;
 			}
 
-			foundModels.add(modelOptional.get());
+			T model = modelOptional.get();
+
+			consumer.accept(model);
+			foundModels.add(model);
 		}
 
 		return foundModels;
@@ -109,7 +95,7 @@ public class JsonModelService<T extends Model>
 			}
 
 			try (FileWriter writer = new FileWriter(file)) {
-				mapper.toJson(model, writer);
+				writer.write(mapper.toJson(model, classType));
 			}
 		} else {
 			LoggerUtil.applyCommonErrorHandler(
@@ -129,6 +115,10 @@ public class JsonModelService<T extends Model>
 
 			if (model == null) {
 				return Optional.empty();
+			}
+
+			if (postLoadMethod != null) {
+				MethodProvider.invoke(postLoadMethod, model);
 			}
 
 			return Optional.of(model);

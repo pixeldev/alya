@@ -1,8 +1,8 @@
 package me.pixeldev.alya.jdk.functional;
 
 @FunctionalInterface
-public interface FailableConsumer {
+public interface FailableConsumer<T> {
 
-	void accept() throws Exception;
+	void accept(T instance) throws Exception;
 
 }

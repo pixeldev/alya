@@ -13,7 +13,7 @@ public class JsonModelMeta<T extends Model> extends ModelMeta<T> {
 		JsonFolder jsonFolder = type.getAnnotation(JsonFolder.class);
 
 		if (jsonFolder == null) {
-			throw new IllegalArgumentException("Json Model doesn't have JsonFolder annotation");
+			throw new IllegalStateException("Json Model doesn't have JsonFolder annotation");
 		}
 
 		folderName = jsonFolder.value();

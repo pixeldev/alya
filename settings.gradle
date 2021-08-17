@@ -1,6 +1,6 @@
 rootProject.name = 'alya'
 
-['bukkit', 'bukkit-abstraction', 'jdk'].forEach {
+['bukkit', 'bukkit-abstraction', 'jdk', 'api', 'bungeecord'].forEach {
 	include it
 }
 
@@ -8,9 +8,6 @@ rootProject.name = 'alya'
 	include "versions:${it}"
 }
 
-['universal', 'gson'].forEach {
+['universal', 'gson', 'sql'].forEach {
 	include "storage:${it}"
 }
-include 'api'
-include 'bungeecord'
-

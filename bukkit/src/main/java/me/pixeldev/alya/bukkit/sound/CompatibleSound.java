@@ -295,7 +295,7 @@ public enum CompatibleSound {
 			return sound8 == null ? Sound.valueOf("IRONGOLEM_DEATH") : Sound.valueOf(sound8);
 		} else if (SERVER_VERSION_INT > 9 && SERVER_VERSION_INT < 13) {
 			return sound912 == null ? Sound.valueOf("ENTITY_IRONGOLEM_DEATH") : Sound.valueOf(sound912);
-		} else if (SERVER_VERSION_INT == 13) {
+		} else if (SERVER_VERSION_INT >= 13) {
 			return sound13 == null ? Sound.valueOf("ENTITY_IRON_GOLEM_DEATH") : Sound.valueOf(sound13);
 		} else {
 			return null;

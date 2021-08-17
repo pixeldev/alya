@@ -1,9 +1,12 @@
 package me.pixeldev.alya.jdk.statistic;
 
+import java.beans.ConstructorProperties;
+
 public class ByteStatistic {
 
 	private byte value;
 
+	@ConstructorProperties("value")
 	public ByteStatistic(byte value) {
 		this.value = value;
 	}
@@ -18,6 +21,10 @@ public class ByteStatistic {
 
 	public byte decrement(byte value) {
 		return this.value -= value;
+	}
+
+	public byte set(byte value) {
+		return this.value = value;
 	}
 
 	public boolean majorOrEqualThan(byte otherValue) {

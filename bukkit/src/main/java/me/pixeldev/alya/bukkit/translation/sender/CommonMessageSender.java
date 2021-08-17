@@ -9,42 +9,50 @@ import me.pixeldev.alya.bukkit.sound.CompatibleSound;
 import me.yushust.message.send.MessageSender;
 import me.yushust.message.util.StringList;
 
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import javax.inject.Inject;
 
-public class CommonMessageSender implements MessageSender<Player> {
+public class CommonMessageSender implements MessageSender<CommandSender> {
 
 	@Inject private TitleSender titleSender;
 	@Inject private ActionBarSender actionBarSender;
 
 	@Override
-	public void send(Player player, String mode, String message) {
-		switch (mode) {
-			case SendingModes.TITLE: {
-				titleSender.sendTitle(player, TitleDisplay.builder(message)
-						.setFadeIn(20)
-						.setStay(40)
-						.setFadeOut(20)
-						.build()
-				);
-				return;
-			}
+	public void send(CommandSender commandSender, String mode, String message) {
+		if (commandSender instanceof Player) {
+			Player player = (Player) commandSender;
 
-			case SendingModes.ACTION_BAR: {
-				actionBarSender.sendActionBar(player, message);
-				return;
+			switch (mode) {
+				case SendingModes.TITLE: {
+					titleSender.sendTitle(player, TitleDisplay.builder(message)
+							.setFadeIn(20)
+							.setStay(40)
+							.setFadeOut(20)
+							.build()
+					);
+					return;
+				}
+
+				case SendingModes.ACTION_BAR: {
+					actionBarSender.sendActionBar(player, message);
+					return;
+				}
+
+				default: {
+					CompatibleSound compatibleSound = SendingModes.SOUNDS.get(mode);
+					compatibleSound.play(player, 1, 1);
+					break;
+				}
 			}
 		}
 
-		CompatibleSound compatibleSound = SendingModes.SOUNDS.get(mode);
-		compatibleSound.play(player, 1, 1);
-
-		player.sendMessage(message);
+		commandSender.sendMessage(message);
 	}
 
 	@Override
-	public void send(Player receiver, String mode, StringList messages) {
+	public void send(CommandSender receiver, String mode, StringList messages) {
 		if (mode.equals(SendingModes.RANDOM)) {
 			receiver.sendMessage(messages.get(BukkitBasePlugin.RANDOM.nextInt(
 					messages.size()
@@ -53,17 +61,19 @@ public class CommonMessageSender implements MessageSender<Player> {
 			return;
 		}
 
-		if (mode.equals(SendingModes.FULL_TITLE)) {
-			titleSender.sendTitle(receiver, TitleDisplay.builder(
-					messages.get(0)
-			)
-					.setSubtitle(messages.get(1))
-					.setFadeIn(20)
-					.setStay(40)
-					.setFadeOut(20)
-					.build());
+		if (receiver instanceof Player) {
+			Player player = (Player) receiver;
 
-			return;
+			if (mode.equals(SendingModes.FULL_TITLE)) {
+				titleSender.sendTitle(player, TitleDisplay.builder(messages.get(0))
+						.setSubtitle(messages.get(1))
+						.setFadeIn(20)
+						.setStay(40)
+						.setFadeOut(20)
+						.build());
+
+				return;
+			}
 		}
 
 		send(receiver, mode, messages.join("\n"));

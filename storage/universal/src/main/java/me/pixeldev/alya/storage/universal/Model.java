@@ -4,6 +4,8 @@ public interface Model {
 
 	String getId();
 
-	String getCacheIdentifier();
+	default String getCacheIdentifier() {
+		return getId();
+	}
 
 }

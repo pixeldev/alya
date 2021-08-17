@@ -11,7 +11,6 @@ import net.kyori.text.TextComponent;
 import net.kyori.text.format.TextColor;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import javax.inject.Inject;
 
@@ -27,13 +26,8 @@ public final class CommonUsageBuilder extends DefaultUsageBuilder {
 				BukkitCommandManager.SENDER_NAMESPACE
 		);
 
-		Object entity = "es";
-		if (commandSender instanceof Player) {
-			entity = commandSender;
-		}
-
-		return TextComponent.of(messageHandler.get(entity, "commands.translation.usage"))
-				.append(component.color(TextColor.GOLD));
+		return TextComponent.of(messageHandler.get(commandSender, "commands.translation.usage"))
+				.append(component.color(TextColor.RED));
 	}
 
 }

@@ -1,1 +1,1 @@
-me.pixeldev.alya.bukkit.listener.BukkitAutoListenerWriter
+me.pixeldev.alya.bukkit.auto.BukkitAutoListenerAnnotationProcessor

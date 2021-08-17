@@ -1,6 +1,6 @@
 package me.pixeldev.alya.jdk.concurrent.observer;
 
-import me.pixeldev.alya.jdk.functional.FailableConsumer;
+import me.pixeldev.alya.jdk.functional.FailableRunnable;
 
 import java.util.concurrent.Callable;
 import java.util.function.Consumer;
@@ -40,10 +40,10 @@ public final class Observables {
 		});
 	}
 
-	public static Observable<Void> safeObservable(FailableConsumer consumer) {
+	public static Observable<Void> safeObservable(FailableRunnable consumer) {
 		return new Observable<>(() -> {
 			try {
-				consumer.accept();
+				consumer.run();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -52,11 +52,11 @@ public final class Observables {
 		});
 	}
 
-	public static Observable<Void> safeObservable(FailableConsumer consumer,
+	public static Observable<Void> safeObservable(FailableRunnable consumer,
 																								Consumer<Throwable> errorHandler) {
 		return new Observable<>(() -> {
 			try {
-				consumer.accept();
+				consumer.run();
 			} catch (Exception e) {
 				errorHandler.accept(e);
 			}
