@@ -10,33 +10,33 @@ subprojects {
 	version '1.2.0-SNAPSHOT'
 
 	publishing {
-//		repositories {
-//			maven {
-//				def snapshot = version.toString().endsWith("-SNAPSHOT")
-//				def typeName = snapshot ? 'snapshots' : 'releases'
-//				def repoUrl = 'https://repo.unnamed.team/repository/unnamed-' + typeName
-//
-//				name = snapshot ? 'unnamed-snapshots' : 'unnamed-releases'
-//				url = repoUrl
-//				credentials {
-//					username = System.getenv('REPO_USER')
-//					password = System.getenv('REPO_PASSWORD')
-//				}
-//			}
-//			publications {
-//				maven(MavenPublication) {
-//					from components.java
-//				}
-//			}
-//		}
+		repositories {
+			maven {
+				def snapshot = version.toString().endsWith("-SNAPSHOT")
+				def typeName = snapshot ? 'snapshots' : 'releases'
+				def repoUrl = 'https://repo.unnamed.team/repository/unnamed-' + typeName
+
+				name = snapshot ? 'unnamed-snapshots' : 'unnamed-releases'
+				url = repoUrl
+				credentials {
+					username = System.getenv('REPO_USER')
+					password = System.getenv('REPO_PASSWORD')
+				}
+			}
+			publications {
+				maven(MavenPublication) {
+					from components.java
+				}
+			}
+		}
 
 //    For install the project into ur .m2
 //
-    publications {
-      mavenJava(MavenPublication) {
-        from components.java
-      }
-    }
+//    publications {
+//      mavenJava(MavenPublication) {
+//        from components.java
+//      }
+//    }
 	}
 
 	repositories {
