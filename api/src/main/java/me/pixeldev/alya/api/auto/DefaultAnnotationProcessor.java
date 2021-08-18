@@ -40,11 +40,11 @@ public abstract class DefaultAnnotationProcessor extends AbstractProcessor {
 		out.println("public class " + className + " implements me.pixeldev.alya.api.loader.Loader {");
 		out.println();
 
-		elements.forEach(listener -> out.println(
+		elements.forEach(element -> out.println(
 				"  @javax.inject.Inject private "
-						+ listener
+						+ element
 						+ " "
-						+ listener.getSimpleName().toString().toLowerCase()
+						+ element.getSimpleName().toString().toLowerCase()
 						+ ";"
 		));
 	}
