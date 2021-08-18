@@ -20,11 +20,17 @@ public class BungeeAutoCommandAnnotationProcessor extends AutoCommandAnnotationP
 			writeDefaults(out, elements, packageName, className);
 			out.println();
 			out.println("  @javax.inject.Inject private net.md_5.bungee.api.plugin.Plugin plugin; ");
+			out.println("  @javax.inject.Inject private me.yushust.inject.Injector injector;");
+			out.println();
+			out.println("  @javax.inject.Inject private me.pixeldev.alya.bungee.command.CommonTranslatorProvider translatorProvider;");
+			out.println("  @javax.inject.Inject private me.pixeldev.alya.bungee.command.CommonUsageBuilder usageBuilder;");
 			out.println();
 
 			out.println("  @Override");
 			out.println("  public void load() {");
 			out.println("    me.fixeddev.commandflow.CommandManager commandManager = new me.fixeddev.commandflow.bungee.BungeeCommandManager(plugin);");
+			out.println("    commandManager.setTranslator(new me.fixeddev.commandflow.translator.DefaultTranslator(translatorProvider));");
+			out.println("    commandManager.setUsageBuilder(usageBuilder);");
 			out.println("    me.fixeddev.commandflow.annotated.part.PartInjector partInjector = new me.fixeddev.commandflow.annotated.part.SimplePartInjector();");
 			out.println("    partInjector.install(new me.fixeddev.commandflow.annotated.part.defaults.DefaultsModule());");
 			out.println("    partInjector.install(new me.fixeddev.commandflow.bungee.factory.BungeeModule());");
@@ -38,12 +44,6 @@ public class BungeeAutoCommandAnnotationProcessor extends AutoCommandAnnotationP
 				switch (property) {
 					case MODULE:
 						out.println("    partInjector.install(" + commandProperty.getSimpleName().toString().toLowerCase() + ");");
-						break;
-					case TRANSLATOR_PROVIDER:
-						out.println("    commandManager.setTranslator(new me.fixeddev.commandflow.translator.DefaultTranslator(" + commandProperty.getSimpleName().toString().toLowerCase() + "));");
-						break;
-					case USAGE_BUILDER:
-						out.println("    commandManager.setUsageBuilder(" + commandProperty.getSimpleName().toString().toLowerCase() + ");");
 						break;
 					case AUTHORIZER: out.println("    commandManager.setAuthorizer(" + commandProperty.getSimpleName().toString().toLowerCase() + ");");
 						break;

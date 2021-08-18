@@ -12,7 +12,6 @@ import org.bukkit.entity.Player;
 
 import javax.inject.Inject;
 
-@AutoCommand(property = AutoCommand.Property.TRANSLATOR_PROVIDER)
 public final class CommonTranslatorProvider implements TranslationProvider {
 
 	@Inject private MessageHandler messageHandler;

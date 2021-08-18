@@ -15,8 +15,6 @@ public @interface AutoCommand {
 	Property property() default Property.COMMAND;
 
 	enum Property {
-		TRANSLATOR_PROVIDER("translator.TranslationProvider"),
-		USAGE_BUILDER("usage.UsageBuilder"),
 		AUTHORIZER("Authorizer"),
 		MODULE("annotated.part.Module"),
 		COMMAND("annotated.CommandClass");

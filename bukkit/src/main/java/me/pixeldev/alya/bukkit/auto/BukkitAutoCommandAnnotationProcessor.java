@@ -26,10 +26,16 @@ public class BukkitAutoCommandAnnotationProcessor
 			out.println("  @javax.inject.Inject private org.bukkit.plugin.Plugin plugin;");
 			out.println("  @javax.inject.Inject private me.yushust.inject.Injector injector;");
 			out.println();
+			out.println("  @javax.inject.Inject private me.pixeldev.alya.bukkit.command.CommonTranslatorProvider translatorProvider;");
+			out.println("  @javax.inject.Inject private me.pixeldev.alya.bukkit.command.CommonUsageBuilder usageBuilder;");
+			out.println();
 
 			out.println("  @Override");
 			out.println("  public void load() {");
 			out.println("    me.fixeddev.commandflow.CommandManager commandManager = new me.fixeddev.commandflow.bukkit.BukkitCommandManager(plugin.getName());");
+			out.println("    commandManager.setTranslator(new me.fixeddev.commandflow.translator.DefaultTranslator(translatorProvider));");
+			out.println("    commandManager.setUsageBuilder(usageBuilder);");
+
 			out.println("    me.fixeddev.commandflow.annotated.part.PartInjector partInjector = new me.fixeddev.commandflow.annotated.part.SimplePartInjector();");
 			out.println("    partInjector.install(new me.fixeddev.commandflow.annotated.part.defaults.DefaultsModule());");
 			out.println("    partInjector.install(new me.fixeddev.commandflow.bukkit.factory.BukkitModule());");
@@ -45,13 +51,8 @@ public class BukkitAutoCommandAnnotationProcessor
 					case MODULE:
 						out.println("    partInjector.install(" + commandProperty.getSimpleName().toString().toLowerCase() + ");");
 						break;
-					case TRANSLATOR_PROVIDER:
-						out.println("    commandManager.setTranslator(new me.fixeddev.commandflow.translator.DefaultTranslator(" + commandProperty.getSimpleName().toString().toLowerCase() + "));");
-						break;
-					case USAGE_BUILDER:
-						out.println("    commandManager.setUsageBuilder(" + commandProperty.getSimpleName().toString().toLowerCase() + ");");
-						break;
-					case AUTHORIZER: out.println("    commandManager.setAuthorizer(" + commandProperty.getSimpleName().toString().toLowerCase() + ");");
+					case AUTHORIZER:
+						out.println("    commandManager.setAuthorizer(" + commandProperty.getSimpleName().toString().toLowerCase() + ");");
 						break;
 				}
 			});
