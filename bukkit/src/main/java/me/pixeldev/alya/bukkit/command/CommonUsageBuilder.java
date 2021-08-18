@@ -4,6 +4,7 @@ import me.fixeddev.commandflow.CommandContext;
 import me.fixeddev.commandflow.bukkit.BukkitCommandManager;
 import me.fixeddev.commandflow.usage.DefaultUsageBuilder;
 
+import me.pixeldev.alya.api.auto.command.AutoCommand;
 import me.yushust.message.MessageHandler;
 
 import net.kyori.text.Component;

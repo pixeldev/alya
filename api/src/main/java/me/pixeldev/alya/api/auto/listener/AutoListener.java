@@ -1,4 +1,4 @@
-package me.pixeldev.alya.api.auto;
+package me.pixeldev.alya.api.auto.listener;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -1,6 +1,6 @@
 package me.pixeldev.alya.bungee.auto;
 
-import me.pixeldev.alya.api.auto.AutoListenerAnnotationProcessor;
+import me.pixeldev.alya.api.auto.listener.AutoListenerAnnotationProcessor;
 
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.lang.model.element.Element;
@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Set;
 
-@SupportedAnnotationTypes("me.pixeldev.alya.api.auto.AutoListener")
+@SupportedAnnotationTypes("me.pixeldev.alya.api.auto.listener.AutoListener")
 public class BungeeAutoListenerAnnotationProcessor
 		extends AutoListenerAnnotationProcessor {
 
@@ -22,12 +22,8 @@ public class BungeeAutoListenerAnnotationProcessor
 		JavaFileObject listenerRegisterFile = processingEnv.getFiler().createSourceFile(className);
 
 		try (final PrintWriter out = new PrintWriter(listenerRegisterFile.openWriter())) {
-			out.println("package " + packageName + ";");
+			writeDefaults(out, elements, packageName, className);
 			out.println();
-
-			out.println("public class " + className + " implements me.pixeldev.alya.api.loader.Loader {");
-			out.println();
-
 			out.println("  @javax.inject.Inject private net.md_5.bungee.api.plugin.Plugin plugin; ");
 			out.println();
 

@@ -4,6 +4,7 @@ import me.fixeddev.commandflow.Namespace;
 import me.fixeddev.commandflow.bukkit.BukkitCommandManager;
 import me.fixeddev.commandflow.translator.TranslationProvider;
 
+import me.pixeldev.alya.api.auto.command.AutoCommand;
 import me.yushust.message.MessageHandler;
 
 import org.bukkit.command.CommandSender;
