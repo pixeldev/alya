@@ -29,7 +29,7 @@ public @interface AutoCommand {
 
 		public TypeMirror getType(ProcessingEnvironment processingEnv) {
 			TypeElement element = processingEnv.getElementUtils()
-					.getTypeElement(" me.fixeddev.commandflow." + name);
+					.getTypeElement("me.fixeddev.commandflow." + name);
 
 			if (element == null) {
 				return null;
