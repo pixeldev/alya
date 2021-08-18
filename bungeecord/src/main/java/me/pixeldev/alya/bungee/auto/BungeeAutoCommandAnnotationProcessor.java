@@ -29,16 +29,24 @@ public class BungeeAutoCommandAnnotationProcessor extends AutoCommandAnnotationP
 			out.println("    partInjector.install(new me.fixeddev.commandflow.annotated.part.defaults.DefaultsModule());");
 			out.println("    partInjector.install(new me.fixeddev.commandflow.bungee.factory.BungeeModule());");
 
-
-			out.println("    me.fixeddev.commandflow.annotated.builder.AnnotatedCommandBuilder builder = new me.fixeddev.commandflow.annotated.builder.AnnotatedCommandBuilderImpl(partInjector);");
-
+			out.println("    me.fixeddev.commandflow.annotated.AnnotatedCommandTreeBuilder builder = new me.fixeddev.commandflow.annotated.AnnotatedCommandTreeBuilderImpl(");
+			out.println("      new me.fixeddev.commandflow.annotated.builder.AnnotatedCommandBuilderImpl(partInjector),");
+			out.println("      (clazz, parent) -> injector.getInstance(clazz)");
+			out.println("    );");
 			elements.forEach(commandProperty -> {
 				AutoCommand.Property property  = commandProperty.getAnnotation(AutoCommand.class).property();
 				switch (property) {
-					case MODULE -> out.println("    partInjector.install(" + commandProperty.getSimpleName().toString().toLowerCase() + ");");
-					case TRANSLATOR_PROVIDER -> out.println("    commandManager.setTranslator(new me.fixeddev.commandflow.translator.DefaultTranslator(" + commandProperty.getSimpleName().toString().toLowerCase() + ");");
-					case USAGE_BUILDER -> out.println("    commandManager.setUsageBuilder(" + commandProperty.getSimpleName().toString().toLowerCase() + ");");
-					case AUTHORIZER -> out.println("    commandManager.setAuthorizer(" + commandProperty.getSimpleName().toString().toLowerCase() + ");");
+					case MODULE:
+						out.println("    partInjector.install(" + commandProperty.getSimpleName().toString().toLowerCase() + ");");
+						break;
+					case TRANSLATOR_PROVIDER:
+						out.println("    commandManager.setTranslator(new me.fixeddev.commandflow.translator.DefaultTranslator(" + commandProperty.getSimpleName().toString().toLowerCase() + "));");
+						break;
+					case USAGE_BUILDER:
+						out.println("    commandManager.setUsageBuilder(" + commandProperty.getSimpleName().toString().toLowerCase() + ");");
+						break;
+					case AUTHORIZER: out.println("    commandManager.setAuthorizer(" + commandProperty.getSimpleName().toString().toLowerCase() + ");");
+						break;
 				}
 			});
 
