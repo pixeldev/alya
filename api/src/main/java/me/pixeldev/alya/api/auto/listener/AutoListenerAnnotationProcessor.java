@@ -1,4 +1,6 @@
-package me.pixeldev.alya.api.auto;
+package me.pixeldev.alya.api.auto.listener;
+
+import me.pixeldev.alya.api.auto.DefaultAnnotationProcessor;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Messager;
@@ -13,21 +15,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static javax.tools.Diagnostic.Kind.ERROR;
-import static javax.tools.Diagnostic.Kind.NOTE;
 
-public abstract class AutoListenerAnnotationProcessor extends AbstractProcessor {
-
-	private static final Set<Modifier> NOT_ABLE_MODIFIERS;
-
-	static {
-		NOT_ABLE_MODIFIERS = new HashSet<>();
-		NOT_ABLE_MODIFIERS.add(Modifier.STATIC);
-		NOT_ABLE_MODIFIERS.add(Modifier.ABSTRACT);
-		NOT_ABLE_MODIFIERS.add(Modifier.PRIVATE);
-		NOT_ABLE_MODIFIERS.add(Modifier.PROTECTED);
-	}
-
-	protected abstract void write(Set<? extends Element> elements) throws IOException;
+public abstract class AutoListenerAnnotationProcessor extends DefaultAnnotationProcessor {
 
 	protected abstract TypeMirror getListenerType();
 
@@ -75,13 +64,4 @@ public abstract class AutoListenerAnnotationProcessor extends AbstractProcessor 
 
 		return false;
 	}
-
-	private Messager messager() {
-		return processingEnv.getMessager();
-	}
-
-	private boolean isType(TypeMirror type, TypeMirror typeToCompare) {
-		return processingEnv.getTypeUtils().isSubtype(type, typeToCompare);
-	}
-
 }
