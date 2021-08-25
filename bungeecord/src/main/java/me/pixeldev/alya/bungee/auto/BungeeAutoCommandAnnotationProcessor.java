@@ -3,12 +3,14 @@ package me.pixeldev.alya.bungee.auto;
 import me.pixeldev.alya.api.auto.command.AutoCommand;
 import me.pixeldev.alya.api.auto.command.AutoCommandAnnotationProcessor;
 
+import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.lang.model.element.Element;
 import javax.tools.JavaFileObject;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Set;
 
+@SupportedAnnotationTypes("me.pixeldev.alya.api.auto.command.AutoCommand")
 public class BungeeAutoCommandAnnotationProcessor extends AutoCommandAnnotationProcessor {
 	@Override
 	protected void write(Set<? extends Element> elements) throws IOException {
