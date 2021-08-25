@@ -26,16 +26,6 @@ public class BungeeAutoListenerAnnotationProcessor
 			out.println();
 			out.println("  @javax.inject.Inject private net.md_5.bungee.api.plugin.Plugin plugin; ");
 			out.println();
-
-			elements.forEach(listener -> out.println(
-					"  @javax.inject.Inject private "
-							+ listener
-							+ " "
-							+ listener.getSimpleName().toString().toLowerCase()
-							+ ";"
-			));
-
-			out.println();
 			out.println("  @Override");
 			out.println("  public void load() {");
 			out.println(
