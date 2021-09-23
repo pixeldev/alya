@@ -5,12 +5,11 @@ import me.pixeldev.alya.storage.universal.Model;
 import me.pixeldev.alya.storage.universal.service.CompleteModelService;
 
 import java.util.List;
-import java.util.Optional;
 
 public abstract class AbstractModelService<T extends Model>
 		implements CompleteModelService<T> {
 
-	protected abstract Optional<T> internalFind(String id) throws Exception;
+	protected abstract T internalFind(String id) throws Exception;
 
 	protected abstract boolean internalDelete(String id) throws Exception;
 

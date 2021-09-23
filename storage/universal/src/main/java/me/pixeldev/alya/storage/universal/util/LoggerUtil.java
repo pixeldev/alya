@@ -1,4 +1,4 @@
-package me.pixeldev.alya.storage.universal.internal;
+package me.pixeldev.alya.storage.universal.util;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

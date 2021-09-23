@@ -1,7 +1,6 @@
 package me.pixeldev.alya.versions.v1_8_R3.actionbar;
 
 import me.pixeldev.alya.abstraction.actionbar.AbstractActionBarSender;
-import me.pixeldev.alya.abstraction.packet.PacketSender;
 
 import net.minecraft.server.v1_8_R3.IChatBaseComponent;
 import net.minecraft.server.v1_8_R3.PacketPlayOutChat;

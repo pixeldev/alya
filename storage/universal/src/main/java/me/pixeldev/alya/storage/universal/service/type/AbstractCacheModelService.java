@@ -1,13 +1,12 @@
 package me.pixeldev.alya.storage.universal.service.type;
 
-import me.pixeldev.alya.jdk.concurrent.observer.Observable;
+import me.pixeldev.alya.jdk.concurrent.AsyncResponse;
 import me.pixeldev.alya.storage.universal.Model;
 import me.pixeldev.alya.storage.universal.internal.CacheIdentifierResolver;
 import me.pixeldev.alya.storage.universal.internal.meta.ModelMeta;
 import me.pixeldev.alya.storage.universal.service.CompleteModelService;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Consumer;
 
 public abstract class AbstractCacheModelService<T extends Model>
@@ -27,36 +26,12 @@ public abstract class AbstractCacheModelService<T extends Model>
 	}
 
 	@Override
-	public Observable<Boolean> existsByCacheIdentifier(String value) {
-		throw UNSUPPORTED_EXCEPTION;
-	}
-
-	@Override
-	public boolean existsByCacheIdentifierSync(String value) throws Exception {
-		if (resolver == null) {
-			return false;
-		}
-
-		return internalFind(resolver.resolve(value)).isPresent();
-	}
-
-	@Override
-	public Observable<Boolean> exists(String id) {
-		throw UNSUPPORTED_EXCEPTION;
-	}
-
-	@Override
-	public boolean existsSync(String id) throws Exception {
-		return internalFind(id).isPresent();
-	}
-
-	@Override
 	public CompleteModelService<T> getCacheModelService() {
 		throw UNSUPPORTED_EXCEPTION;
 	}
 
 	@Override
-	public Observable<Boolean> delete(String id) {
+	public AsyncResponse<Boolean> delete(String id) {
 		throw UNSUPPORTED_EXCEPTION;
 	}
 
@@ -65,18 +40,18 @@ public abstract class AbstractCacheModelService<T extends Model>
 		if (resolver == null) {
 			return internalDelete(id);
 		} else {
-			Optional<T> modelOptional = internalFind(id);
+			T model = internalFind(id);
 
-			if (!modelOptional.isPresent()) {
+			if (model == null) {
 				return false;
 			}
 
-			return deleteSync(modelOptional.get());
+			return deleteSync(model);
 		}
 	}
 
 	@Override
-	public Observable<Boolean> delete(T model) {
+	public AsyncResponse<Boolean> delete(T model) {
 		throw UNSUPPORTED_EXCEPTION;
 	}
 
@@ -90,39 +65,39 @@ public abstract class AbstractCacheModelService<T extends Model>
 	}
 
 	@Override
-	public Observable<Optional<T>> findByCacheIdentifier(String value) {
+	public AsyncResponse<T> findByCacheIdentifier(String value) {
 		throw UNSUPPORTED_EXCEPTION;
 	}
 
 	@Override
-	public Optional<T> findByCacheIdentifierSync(String value) throws Exception {
+	public T findByCacheIdentifierSync(String value) throws Exception {
 		if (resolver == null) {
-			return Optional.empty();
+			return null;
 		}
 
 		String modelId = resolver.resolve(value);
 
 		if (modelId == null) {
-			return Optional.empty();
+			return null;
 		}
 
 		return internalFind(modelId);
 	}
 
 	@Override
-	public Observable<Optional<T>> find(String id,
+	public AsyncResponse<T> find(String id,
 																			boolean findInDatabaseToo) {
 		throw UNSUPPORTED_EXCEPTION;
 	}
 
 	@Override
-	public Optional<T> findSync(String id,
+	public T findSync(String id,
 															boolean findInDatabaseToo) throws Exception {
 		return internalFind(id);
 	}
 
 	@Override
-	public Observable<List<T>> findAllFromCache() {
+	public AsyncResponse<List<T>> findAllFromCache() {
 		throw UNSUPPORTED_EXCEPTION;
 	}
 
@@ -132,7 +107,7 @@ public abstract class AbstractCacheModelService<T extends Model>
 	}
 
 	@Override
-	public Observable<List<T>> findAll(Consumer<T> postLoad) {
+	public AsyncResponse<List<T>> findAll(Consumer<T> postLoad) {
 		throw UNSUPPORTED_EXCEPTION;
 	}
 
@@ -142,7 +117,7 @@ public abstract class AbstractCacheModelService<T extends Model>
 	}
 
 	@Override
-	public Observable<Void> upload(T model, boolean removeFromCache) {
+	public AsyncResponse<Void> upload(T model, boolean removeFromCache) {
 		throw UNSUPPORTED_EXCEPTION;
 	}
 
@@ -156,7 +131,7 @@ public abstract class AbstractCacheModelService<T extends Model>
 	}
 
 	@Override
-	public Observable<Void> uploadAll(Consumer<T> prePersist) {
+	public AsyncResponse<Void> uploadAll(Consumer<T> prePersist) {
 		throw UNSUPPORTED_EXCEPTION;
 	}
 

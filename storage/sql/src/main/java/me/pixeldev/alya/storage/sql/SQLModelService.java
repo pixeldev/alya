@@ -14,7 +14,6 @@ import org.jdbi.v3.core.mapper.RowMapper;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class SQLModelService<T extends SQLModel> extends AbstractRemoteModelService<T> {
 
@@ -43,14 +42,15 @@ public class SQLModelService<T extends SQLModel> extends AbstractRemoteModelServ
 	}
 
 	@Override
-	protected Optional<T> internalFind(String id) {
+	protected T internalFind(String id) {
 		try (Handle handle = connection.open()) {
 			return handle.select("SELECT * FROM <TABLE> WHERE <COLUMN> = :n")
 					.define("TABLE", table.getName())
 					.define("COLUMN", table.getPrimaryColumn())
 					.bind("n", id)
 					.map(rowMapper)
-					.findFirst();
+					.findFirst()
+					.orElse(null);
 		}
 	}
 

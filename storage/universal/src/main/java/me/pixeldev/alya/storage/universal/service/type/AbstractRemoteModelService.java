@@ -1,7 +1,8 @@
 package me.pixeldev.alya.storage.universal.service.type;
 
-import me.pixeldev.alya.jdk.concurrent.observer.Observable;
-import me.pixeldev.alya.jdk.concurrent.observer.Observables;
+import me.pixeldev.alya.jdk.concurrent.AsyncResponse;
+import me.pixeldev.alya.jdk.concurrent.SimpleAsyncResponse;
+import me.pixeldev.alya.jdk.concurrent.SimpleResponse;
 import me.pixeldev.alya.storage.universal.Model;
 import me.pixeldev.alya.storage.universal.internal.meta.Cached;
 import me.pixeldev.alya.storage.universal.internal.meta.ModelMeta;
@@ -10,8 +11,10 @@ import me.pixeldev.alya.storage.universal.service.CompleteModelService;
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
+
+import static me.pixeldev.alya.jdk.concurrent.AsyncExecutor.EXECUTOR;
 
 public abstract class AbstractRemoteModelService<T extends Model>
 		extends AbstractModelService<T> {
@@ -46,33 +49,21 @@ public abstract class AbstractRemoteModelService<T extends Model>
 	}
 
 	@Override
-	public Observable<Boolean> existsByCacheIdentifier(String value) {
-		return Observables.safeObservable(() -> existsByCacheIdentifierSync(value));
-	}
-
-	@Override
-	public boolean existsByCacheIdentifierSync(String value) throws Exception {
-		return findByCacheIdentifierSync(value).isPresent();
-	}
-
-	@Override
-	public Observable<Boolean> exists(String id) {
-		return Observables.safeObservable(() -> existsSync(id));
-	}
-
-	@Override
-	public boolean existsSync(String id) throws Exception {
-		return findSync(id, false).isPresent();
-	}
-
-	@Override
 	public CompleteModelService<T> getCacheModelService() {
 		return cacheModelService;
 	}
 
 	@Override
-	public Observable<Boolean> delete(String id) {
-		return Observables.safeObservable(() -> deleteSync(id));
+	public AsyncResponse<Boolean> delete(String id) {
+		return new SimpleAsyncResponse<>(
+				CompletableFuture.supplyAsync(() -> {
+					try {
+						return SimpleResponse.success(deleteSync(id));
+					} catch (Exception e) {
+						return SimpleResponse.error(e);
+					}
+				}, EXECUTOR)
+		);
 	}
 
 	@Override
@@ -89,68 +80,78 @@ public abstract class AbstractRemoteModelService<T extends Model>
 	}
 
 	@Override
-	public Observable<Optional<T>> findByCacheIdentifier(String value) {
-		return Observables.safeObservable(
-				() -> findByCacheIdentifierSync(value),
-				error -> {
-					error.printStackTrace();
-					return Optional.empty();
-				}
+	public AsyncResponse<T> findByCacheIdentifier(String value) {
+		return new SimpleAsyncResponse<>(
+				CompletableFuture.supplyAsync(() -> {
+					try {
+						return SimpleResponse.success(findByCacheIdentifierSync(value));
+					} catch (Exception e) {
+						return SimpleResponse.error(e);
+					}
+				}, EXECUTOR)
 		);
 	}
 
 	@Override
-	public Optional<T> findByCacheIdentifierSync(String value) throws Exception {
+	public T findByCacheIdentifierSync(String value) throws Exception {
 		if (cacheModelService == null) {
-			return Optional.empty();
+			return null;
 		}
 
 		return cacheModelService.findByCacheIdentifierSync(value);
 	}
 
 	@Override
-	public Observable<Optional<T>> find(String id,
-																			boolean findInDatabaseToo) {
-		return Observables.safeObservable(
-				() -> findSync(id, findInDatabaseToo),
-				error -> {
-					error.printStackTrace();
-					return Optional.empty();
-				}
+	public AsyncResponse<T> find(String id,
+															 boolean findInDatabaseToo) {
+		return new SimpleAsyncResponse<>(
+				CompletableFuture.supplyAsync(() -> {
+					try {
+						return SimpleResponse.success(findSync(id, findInDatabaseToo));
+					} catch (Exception e) {
+						return SimpleResponse.error(e);
+					}
+				}, EXECUTOR)
 		);
 	}
 
 	@Override
-	public Optional<T> findSync(String id,
-															boolean findInDatabaseToo) throws Exception {
+	public T findSync(String id,
+										boolean findInDatabaseToo) throws Exception {
 		if (cacheModelService == null) {
 			return internalFind(id);
 		}
 
-		Optional<T> foundModel = cacheModelService.findSync(id, findInDatabaseToo);
+		T foundModel = cacheModelService.findSync(id, findInDatabaseToo);
 
-		if (!foundModel.isPresent()) {
+		if (foundModel == null) {
 			if (findInDatabaseToo) {
-				Optional<T> foundModelInDatabase = internalFind(id);
+				T foundModelInDatabase = internalFind(id);
 
-				if (foundModelInDatabase.isPresent()) {
-					T model = foundModelInDatabase.get();
-
-					cacheModelService.uploadSync(model, false);
+				if (foundModelInDatabase != null) {
+					cacheModelService.uploadSync(foundModelInDatabase, false);
 				}
 
 				return foundModelInDatabase;
 			} else {
-				return Optional.empty();
+				return null;
 			}
+		} else {
+			return foundModel;
 		}
-
-		return foundModel;
 	}
 
 	@Override
-	public Observable<List<T>> findAllFromCache() {
-		return Observables.safeObservable(this::findAllFromCacheSync);
+	public AsyncResponse<List<T>> findAllFromCache() {
+		return new SimpleAsyncResponse<>(
+				CompletableFuture.supplyAsync(() -> {
+					try {
+						return SimpleResponse.success(findAllFromCacheSync());
+					} catch (Exception e) {
+						return SimpleResponse.error(e);
+					}
+				}, EXECUTOR)
+		);
 	}
 
 	@Override
@@ -163,8 +164,16 @@ public abstract class AbstractRemoteModelService<T extends Model>
 	}
 
 	@Override
-	public Observable<List<T>> findAll(Consumer<T> postLoad) {
-		return Observables.safeObservable(() -> findAllSync(postLoad));
+	public AsyncResponse<List<T>> findAll(Consumer<T> postLoad) {
+		return new SimpleAsyncResponse<>(
+				CompletableFuture.supplyAsync(() -> {
+					try {
+						return SimpleResponse.success(findAllSync(postLoad));
+					} catch (Exception e) {
+						return SimpleResponse.error(e);
+					}
+				}, EXECUTOR)
+		);
 	}
 
 	@Override
@@ -181,8 +190,17 @@ public abstract class AbstractRemoteModelService<T extends Model>
 	}
 
 	@Override
-	public Observable<Void> upload(T model, boolean removeFromCache) {
-		return Observables.safeObservable(() -> uploadSync(model, removeFromCache));
+	public AsyncResponse<Void> upload(T model, boolean removeFromCache) {
+		return new SimpleAsyncResponse<>(
+				CompletableFuture.supplyAsync(() -> {
+					try {
+						uploadSync(model, removeFromCache);
+						return SimpleResponse.success(null);
+					} catch (Exception e) {
+						return SimpleResponse.error(e);
+					}
+				}, EXECUTOR)
+		);
 	}
 
 	@Override
@@ -199,8 +217,17 @@ public abstract class AbstractRemoteModelService<T extends Model>
 	}
 
 	@Override
-	public Observable<Void> uploadAll(Consumer<T> prePersist) {
-		return Observables.safeObservable(() -> uploadAllSync(prePersist));
+	public AsyncResponse<Void> uploadAll(Consumer<T> prePersist) {
+		return new SimpleAsyncResponse<>(
+				CompletableFuture.supplyAsync(() -> {
+					try {
+						uploadAllSync(prePersist);
+						return SimpleResponse.success(null);
+					} catch (Exception e) {
+						return SimpleResponse.error(e);
+					}
+				}, EXECUTOR)
+		);
 	}
 
 	@Override

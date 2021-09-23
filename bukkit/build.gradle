@@ -3,10 +3,6 @@ dependencies {
 	api 'me.fixeddev:commandflow-bukkit:0.4.0'
 	api 'team.unnamed.gui:core:2.3.1-SNAPSHOT'
 	api project(':api')
-	api project(':bukkit-abstraction')
-	['v1_8_R3', 'v1_16_R3'].forEach {
-		runtimeOnly project(":versions:${it}")
-	}
 
 	compileOnly 'org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT'
 }

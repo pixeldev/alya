@@ -1,13 +1,11 @@
 package me.pixeldev.alya.storage.universal.service;
 
-import me.pixeldev.alya.jdk.concurrent.observer.Observable;
+import me.pixeldev.alya.jdk.concurrent.AsyncResponse;
 import me.pixeldev.alya.storage.universal.Model;
-
-import java.util.concurrent.CompletableFuture;
 
 public interface DeleteService<T extends Model> {
 
-	default Observable<Boolean> delete(T model) {
+	default AsyncResponse<Boolean> delete(T model) {
 		return delete(model.getId());
 	}
 
@@ -15,7 +13,7 @@ public interface DeleteService<T extends Model> {
 		return deleteSync(model.getId());
 	}
 
-	Observable<Boolean> delete(String id);
+	AsyncResponse<Boolean> delete(String id);
 
 	boolean deleteSync(String id) throws Exception;
 

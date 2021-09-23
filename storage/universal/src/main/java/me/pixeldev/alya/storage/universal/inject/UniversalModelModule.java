@@ -27,7 +27,6 @@ public class UniversalModelModule<T extends Model>
 
 		bind(modelServiceType).toProvider(modelServiceProvider).singleton();
 
-		bind(TypeReference.of(CheckerService.class, modelClass)).to(modelServiceType).singleton();
 		bind(TypeReference.of(DeleteService.class, modelClass)).to(modelServiceType).singleton();
 		bind(TypeReference.of(FindService.class, modelClass)).to(modelServiceType).singleton();
 		bind(TypeReference.of(UploadService.class, modelClass)).to(modelServiceType).singleton();

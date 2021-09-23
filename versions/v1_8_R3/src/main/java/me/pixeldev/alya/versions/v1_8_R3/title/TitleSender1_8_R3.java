@@ -1,6 +1,5 @@
 package me.pixeldev.alya.versions.v1_8_R3.title;
 
-import me.pixeldev.alya.abstraction.packet.PacketSender;
 import me.pixeldev.alya.abstraction.title.AbstractTitleSender;
 import me.pixeldev.alya.abstraction.title.TitleDisplay;
 

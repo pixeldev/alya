@@ -6,7 +6,7 @@ import me.pixeldev.alya.jdk.functional.FailableConsumer;
 import me.pixeldev.alya.jdk.reflect.MethodProvider;
 import me.pixeldev.alya.storage.gson.meta.JsonModelMeta;
 import me.pixeldev.alya.storage.universal.Model;
-import me.pixeldev.alya.storage.universal.internal.LoggerUtil;
+import me.pixeldev.alya.storage.universal.util.LoggerUtil;
 import me.pixeldev.alya.storage.universal.internal.meta.ModelMeta;
 import me.pixeldev.alya.storage.universal.service.type.AbstractRemoteModelService;
 
@@ -18,8 +18,6 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
-import java.util.function.Consumer;
 
 public class JsonModelService<T extends Model>
 		extends AbstractRemoteModelService<T> {
@@ -43,7 +41,7 @@ public class JsonModelService<T extends Model>
 	}
 
 	@Override
-	protected Optional<T> internalFind(String id) throws Exception {
+	protected T internalFind(String id) throws Exception {
 		return internalFind(new File(modelFolder, id + ".json"));
 	}
 
@@ -63,13 +61,11 @@ public class JsonModelService<T extends Model>
 		List<T> foundModels = new ArrayList<>();
 
 		for (File file : listFiles) {
-			Optional<T> modelOptional = internalFind(file);
+			T model = internalFind(file);
 
-			if (!modelOptional.isPresent()) {
+			if (model == null) {
 				continue;
 			}
-
-			T model = modelOptional.get();
 
 			consumer.accept(model);
 			foundModels.add(model);
@@ -105,23 +101,23 @@ public class JsonModelService<T extends Model>
 		}
 	}
 
-	private Optional<T> internalFind(File file) throws Exception {
+	private T internalFind(File file) throws Exception {
 		if (!file.exists()) {
-			return Optional.empty();
+			return null;
 		}
 
 		try (FileReader reader = new FileReader(file)) {
 			T model = mapper.fromJson(reader, classType);
 
 			if (model == null) {
-				return Optional.empty();
+				return null;
 			}
 
 			if (postLoadMethod != null) {
 				MethodProvider.invoke(postLoadMethod, model);
 			}
 
-			return Optional.of(model);
+			return model;
 		}
 	}
 

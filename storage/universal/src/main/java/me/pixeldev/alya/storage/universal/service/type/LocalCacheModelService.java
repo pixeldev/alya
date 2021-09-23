@@ -20,8 +20,8 @@ public class LocalCacheModelService<T extends Model> extends AbstractCacheModelS
 	}
 
 	@Override
-	protected Optional<T> internalFind(String id) {
-		return Optional.ofNullable(cache.get(id));
+	protected T internalFind(String id) {
+		return cache.get(id);
 	}
 
 	@Override
