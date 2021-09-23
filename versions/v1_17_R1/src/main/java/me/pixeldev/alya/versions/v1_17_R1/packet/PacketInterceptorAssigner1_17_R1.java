@@ -1,4 +1,4 @@
-package me.pixeldev.alya.versions.v1_16_R3.packet;
+package me.pixeldev.alya.versions.v1_17_R1.packet;
 
 import me.pixeldev.alya.abstraction.packet.intercept.PacketChannelDuplexHandler;
 import me.pixeldev.alya.abstraction.packet.intercept.PacketInterceptorAssigner;
@@ -11,8 +11,7 @@ public class PacketInterceptorAssigner1_17_R1
 	@Override
 	public void assignInterceptor(Player player, String channelName) {
 		((CraftPlayer) player).getHandle()
-				.networkManager
-				.channel
+				.b.a.k
 				.pipeline()
 				.addBefore(
 						"packet_handler",

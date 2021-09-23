@@ -1,14 +1,16 @@
-package me.pixeldev.alya.versions.v1_16_R3.item;
+package me.pixeldev.alya.versions.v1_17_R1.item;
 
 import me.pixeldev.alya.abstraction.item.ItemNBTTagHandler;
-import net.minecraft.server.v1_16_R3.NBTTagCompound;
-import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack;
+
+import net.minecraft.nbt.NBTTagCompound;
+
+import org.bukkit.craftbukkit.v1_17_R1.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Map;
 import java.util.Optional;
 
-public class ItemNBTTagHandler1_16_R3 implements ItemNBTTagHandler {
+public class ItemNBTTagHandler1_17_R1 implements ItemNBTTagHandler {
 	@Override
 	public boolean hasTag(ItemStack source, String key) {
 		return getTagCompound(asNmsItem(source)).hasKey(key);
@@ -27,7 +29,7 @@ public class ItemNBTTagHandler1_16_R3 implements ItemNBTTagHandler {
 
 	@Override
 	public ItemStack setTags(ItemStack source, Map<String, String> nbtTags) {
-		net.minecraft.server.v1_16_R3.ItemStack itemStack = asNmsItem(source);
+		net.minecraft.world.item.ItemStack itemStack = asNmsItem(source);
 		NBTTagCompound tagCompound = getTagCompound(itemStack);
 
 		nbtTags.forEach(tagCompound::setString);
@@ -38,7 +40,7 @@ public class ItemNBTTagHandler1_16_R3 implements ItemNBTTagHandler {
 
 	@Override
 	public ItemStack setTag(ItemStack source, String key, String value) {
-		net.minecraft.server.v1_16_R3.ItemStack itemStack = asNmsItem(source);
+		net.minecraft.world.item.ItemStack itemStack = asNmsItem(source);
 		NBTTagCompound tagCompound = getTagCompound(itemStack);
 
 		tagCompound.setString(key, value);
@@ -49,7 +51,7 @@ public class ItemNBTTagHandler1_16_R3 implements ItemNBTTagHandler {
 
 	@Override
 	public ItemStack removeTag(ItemStack source, String key) {
-		net.minecraft.server.v1_16_R3.ItemStack itemStack = asNmsItem(source);
+		net.minecraft.world.item.ItemStack itemStack = asNmsItem(source);
 		NBTTagCompound tagCompound = getTagCompound(itemStack);
 
 		tagCompound.remove(key);
@@ -58,11 +60,11 @@ public class ItemNBTTagHandler1_16_R3 implements ItemNBTTagHandler {
 		return CraftItemStack.asBukkitCopy(itemStack);
 	}
 
-	private static net.minecraft.server.v1_16_R3.ItemStack asNmsItem(ItemStack source) {
+	private static net.minecraft.world.item.ItemStack asNmsItem(ItemStack source) {
 		return CraftItemStack.asNMSCopy(source);
 	}
 
-	private static NBTTagCompound getTagCompound(net.minecraft.server.v1_16_R3.ItemStack source) {
+	private static NBTTagCompound getTagCompound(net.minecraft.world.item.ItemStack source) {
 		NBTTagCompound tagCompound = source.getTag();
 
 		if (tagCompound == null) {

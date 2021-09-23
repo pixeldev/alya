@@ -1,8 +1,9 @@
-package me.pixeldev.alya.versions.v1_16_R3.packet;
+package me.pixeldev.alya.versions.v1_17_R1.packet;
 
-import net.minecraft.server.v1_16_R3.Packet;
-import net.minecraft.server.v1_16_R3.PlayerConnection;
-import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.server.network.PlayerConnection;
+
+import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 public final class Packets {
@@ -15,7 +16,7 @@ public final class Packets {
 	 */
 	public static void send(Player player, Packet<?>... packets) {
 		PlayerConnection connection = ((CraftPlayer) player)
-				.getHandle().playerConnection;
+				.getHandle().b;
 		for (Packet<?> packet : packets) {
 			connection.sendPacket(packet);
 		}
@@ -23,7 +24,7 @@ public final class Packets {
 
 	public static void send(Player player, Iterable<Packet<?>> packets) {
 		PlayerConnection connection = ((CraftPlayer) player)
-				.getHandle().playerConnection;
+				.getHandle().b;
 		for (Packet<?> packet : packets) {
 			connection.sendPacket(packet);
 		}
@@ -36,7 +37,7 @@ public final class Packets {
 	public static void send(Iterable<? extends Player> players, Packet<?>... packets) {
 		for (Player player : players) {
 			PlayerConnection connection = ((CraftPlayer) player)
-					.getHandle().playerConnection;
+					.getHandle().b;
 			for (Packet<?> packet : packets) {
 				connection.sendPacket(packet);
 			}
@@ -47,7 +48,7 @@ public final class Packets {
 													Iterable<Packet<?>> packets) {
 		for (Player player : players) {
 			PlayerConnection connection = ((CraftPlayer) player)
-					.getHandle().playerConnection;
+					.getHandle().b;
 			for (Packet<?> packet : packets) {
 				connection.sendPacket(packet);
 			}

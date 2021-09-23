@@ -15,7 +15,6 @@ public class NMSModule1_16_R3 extends AbstractModule {
 
 	@Override
 	protected void configure() {
-		bind(PacketSender.class).to(PacketSender1_16_R3.class).singleton();
 		bind(TitleSender.class).to(TitleSender1_16_R3.class).singleton();
 		bind(ActionBarSender.class).to(ActionBarSender1_16_R3.class).singleton();
 		bind(PacketInterceptorAssigner.class).to(PacketInterceptorAssigner1_16_R3.class).singleton();

@@ -2,6 +2,7 @@ package me.pixeldev.alya.versions.v1_8_R3.title;
 
 import me.pixeldev.alya.abstraction.title.AbstractTitleSender;
 import me.pixeldev.alya.abstraction.title.TitleDisplay;
+import me.pixeldev.alya.versions.v1_8_R3.packet.Packets;
 
 import net.minecraft.server.v1_8_R3.IChatBaseComponent;
 import net.minecraft.server.v1_8_R3.Packet;
@@ -9,11 +10,7 @@ import net.minecraft.server.v1_8_R3.PacketPlayOutTitle;
 
 import org.bukkit.entity.Player;
 
-import javax.inject.Inject;
-
 public class TitleSender1_8_R3 extends AbstractTitleSender {
-
-	@Inject private PacketSender packetSender;
 
 	@Override
 	public void sendTitle(Player player, TitleDisplay titleDisplay) {
@@ -24,7 +21,7 @@ public class TitleSender1_8_R3 extends AbstractTitleSender {
 		int stay = titleDisplay.getStay();
 		int fadeOut = titleDisplay.getFadeOut();
 
-		Object[] packets = new Packet[2];
+		Packet<?>[] packets = new Packet<?>[2];
 
 		packets[0] = createTitlePacket(
 				PacketPlayOutTitle.EnumTitleAction.TITLE, buildComponent(title),
@@ -38,7 +35,7 @@ public class TitleSender1_8_R3 extends AbstractTitleSender {
 			);
 		}
 
-		packetSender.sendPackets(player, packets);
+		Packets.send(player, packets);
 	}
 
 	private IChatBaseComponent buildComponent(String text) {
