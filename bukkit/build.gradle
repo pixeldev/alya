@@ -1,7 +1,7 @@
 dependencies {
 	api 'me.yushust.message:sourcetype-bukkit-yml:6.0.17'
 	api 'me.fixeddev:commandflow-bukkit:0.4.0'
-	api 'team.unnamed.gui:core:2.3.1-SNAPSHOT'
+	api 'team.unnamed.gui:core:2.3.2-SNAPSHOT'
 	api project(':api')
 
 	compileOnly 'org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT'
