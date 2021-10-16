@@ -104,7 +104,13 @@ public final class BungeeYamlFileConfiguration implements YamlFileConfiguration 
 
 	@Override
 	public YamlConfigurationSection getSection(String path) {
-		return new BungeeYamlFileConfiguration(delegate.getSection(path));
+		Configuration section = this.delegate.getSection(path);
+
+		if (section == null || section.getKeys().isEmpty()) {
+			return null;
+		}
+
+		return new BungeeYamlFileConfiguration(section);
 	}
 
 	@Override

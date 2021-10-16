@@ -133,7 +133,13 @@ public final class BukkitYamlFileConfiguration implements YamlFileConfiguration 
 
 	@Override
 	public YamlConfigurationSection getSection(String path) {
-		return new BukkitYamlFileConfiguration(section.getConfigurationSection(path));
+		ConfigurationSection section = this.section.getConfigurationSection(path);
+
+		if (section == null || section.getKeys(false).isEmpty()) {
+			return null;
+		}
+
+		return new BukkitYamlFileConfiguration(section);
 	}
 
 }
