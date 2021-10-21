@@ -30,7 +30,6 @@ public class BukkitAutoListenerAnnotationProcessor
 			out.println("  @Override");
 			out.println("  public void load() {");
 			out.println("    org.bukkit.plugin.PluginManager pluginManager = org.bukkit.Bukkit.getPluginManager();");
-			out.println("    pluginManager.registerEvents(new team.unnamed.gui.core.GUIListeners(), plugin);");
 
 			elements.forEach(listener -> out.println(
 					"    pluginManager.registerEvents(" + listener.getSimpleName().toString().toLowerCase() + ", plugin);"
