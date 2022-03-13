@@ -1,14 +1,14 @@
-package me.pixeldev.alya.versions.v1_18_R1.item;
+package me.pixeldev.alya.versions.v1_18_R2.item;
 
 import me.pixeldev.alya.abstraction.item.ItemNBTTagHandler;
 import net.minecraft.nbt.NBTTagCompound;
-import org.bukkit.craftbukkit.v1_18_R1.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_18_R2.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Map;
 import java.util.Optional;
 
-public class ItemNBTTagHandler1_18_R1 implements ItemNBTTagHandler {
+public class ItemNBTTagHandler1_18_R2 implements ItemNBTTagHandler {
 	@Override
 	public boolean hasTag(ItemStack source, String key) {
 		return getTagCompound(asNmsItem(source)).e(key);
@@ -63,7 +63,7 @@ public class ItemNBTTagHandler1_18_R1 implements ItemNBTTagHandler {
 	}
 
 	private static NBTTagCompound getTagCompound(net.minecraft.world.item.ItemStack source) {
-		NBTTagCompound tagCompound = source.s();
+		NBTTagCompound tagCompound = source.t();
 
 		if (tagCompound == null) {
 			tagCompound = new NBTTagCompound();

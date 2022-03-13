@@ -1,10 +1,10 @@
-package me.pixeldev.alya.versions.v1_18_R1.title;
+package me.pixeldev.alya.versions.v1_18_R2.title;
 
 import me.pixeldev.alya.abstraction.title.AbstractTitleSender;
 import me.pixeldev.alya.abstraction.title.TitleDisplay;
 import org.bukkit.entity.Player;
 
-public class TitleSender1_18_R1 extends AbstractTitleSender {
+public class TitleSender1_18_R2 extends AbstractTitleSender {
 
 	@Override
 	public void sendTitle(Player player, TitleDisplay titleDisplay) {

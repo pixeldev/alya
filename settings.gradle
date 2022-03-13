@@ -4,7 +4,7 @@ rootProject.name = 'alya'
 	include it
 }
 
-['v1_8_R3', 'v1_16_R3', 'v1_17_R1', 'v1_18_R1'].forEach {
+['v1_8_R3', 'v1_16_R3', 'v1_17_R1', 'v1_18_R1', 'v1_18_R2'].forEach {
 	include "versions:${it}"
 }
 

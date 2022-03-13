@@ -1,8 +1,8 @@
-package me.pixeldev.alya.versions.v1_18_R1.packet;
+package me.pixeldev.alya.versions.v1_18_R2.packet;
 
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.server.network.PlayerConnection;
-import org.bukkit.craftbukkit.v1_18_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_18_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 public final class Packets {
